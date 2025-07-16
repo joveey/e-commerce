@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2025 at 03:08 PM
+-- Generation Time: Jul 16, 2025 at 10:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,7 +59,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (5, '2025_07_14_102246_create_products_table', 2),
-(6, '2025_07_14_102331_add_is_admin_to_users_table', 2);
+(6, '2025_07_14_102331_add_is_admin_to_users_table', 2),
+(7, '2025_07_16_175043_add_stock_to_products_table', 3);
 
 -- --------------------------------------------------------
 
@@ -103,6 +104,7 @@ CREATE TABLE `products` (
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `price` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -112,8 +114,10 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`, `created_at`, `updated_at`) VALUES
-(2, 'Jovi', '1234', 12222.00, 'products/mQVV0wtE1faqX9zKwQIL8rryqVeRsVhrdYuuHYfN.png', '2025-07-14 03:54:17', '2025-07-14 03:54:17');
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image`, `created_at`, `updated_at`) VALUES
+(2, 'Jovi', '1234', 12222.00, 19, 'products/mQVV0wtE1faqX9zKwQIL8rryqVeRsVhrdYuuHYfN.png', '2025-07-14 03:54:17', '2025-07-16 11:15:07'),
+(6, 'Vaseline', 'lembab euy', 214914.00, 0, 'products/1OzMtd6gfadpK63WAM1JGEKxSN2mpnXvlctI2oIQ.png', '2025-07-16 09:44:10', '2025-07-16 09:44:10'),
+(9, 'dfsfsd1', 'fdfdfd', 1234124.00, 121, NULL, '2025-07-16 11:20:26', '2025-07-16 11:20:33');
 
 -- --------------------------------------------------------
 
@@ -199,7 +203,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -211,7 +215,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
