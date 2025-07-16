@@ -11,7 +11,7 @@
         <p class="text-gray-600 mt-2">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
         <p class="mt-4 text-gray-800">{{ $product->description }}</p>
 
-        <a href="{{ route('products.index') }}" class="inline-block mt-6 text-pink-500 hover:underline">← Kembali ke daftar produk</a>
+        <a href="{{ route('admin.products.index') }}" class="inline-block mt-6 text-pink-500 hover:underline">← Kembali ke daftar produk</a>
     </div>
 </div>
 @endsection

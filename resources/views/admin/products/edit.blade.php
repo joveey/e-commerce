@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-xl mx-auto p-6 bg-white rounded shadow">
     <h2 class="text-xl font-bold mb-4">Edit Produk</h2>
-    <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.products.update', $product->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-4">
@@ -17,6 +17,10 @@
         <div class="mb-4">
             <label>Harga</label>
             <input type="number" name="price" value="{{ $product->price }}" class="w-full border px-3 py-2" step="0.01" required>
+        </div>
+        <div class="mb-4">
+            <label>Stok</label>
+            <input type="number" name="stock" value="{{ $product->stock }}" class="w-full border px-3 py-2" required>
         </div>
         <div class="mb-4">
             <label>Gambar Saat Ini:</label><br>

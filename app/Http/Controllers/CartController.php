@@ -12,14 +12,29 @@ class CartController extends Controller
     public function add($id)
     {
         $product = Product::findOrFail($id);
+
+        // Cek apakah stok mencukupi
+        if ($product->stock < 1) {
+            return redirect()->back()->with('error', 'Stok produk habis.');
+        }
+
         $cart = session()->get('cart', []);
 
-        $cart[$id] = [
-            "name" => $product->name,
-            "quantity" => isset($cart[$id]) ? $cart[$id]['quantity'] + 1 : 1,
-            "price" => $product->price,
-            "image" => $product->image,
-        ];
+        if (isset($cart[$id])) {
+            // Cek apakah penambahan tidak melebihi stok
+            if ($cart[$id]['quantity'] + 1 > $product->stock) {
+                return redirect()->back()->with('error', 'Jumlah melebihi stok yang tersedia.');
+            }
+
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                "name" => $product->name,
+                "quantity" => 1,
+                "price" => $product->price,
+                "image" => $product->image,
+            ];
+        }
 
         session()->put('cart', $cart);
 
@@ -41,21 +56,53 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
         }
 
+        // Kurangi stok
+        foreach ($cart as $id => $item) {
+            $product = Product::find($id);
+            if ($product) {
+                if ($product->stock < $item['quantity']) {
+                    return redirect()->route('cart.index')->with('error', 'Stok tidak mencukupi untuk produk ' . $product->name);
+                }
+                $product->stock -= $item['quantity'];
+                $product->save();
+            }
+        }
+
+        // Kirim email
         Mail::to($user->email)->send(new InvoiceMail($cart, $user));
 
+        // Kosongkan keranjang
         session()->forget('cart');
 
         return redirect('/')->with('success', 'Checkout berhasil! Invoice telah dikirim ke email.');
     }
+
     public function checkoutSingle($id)
     {
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
-        // Kirim invoice hanya 1 produk
-        Mail::to($user->email)->send(new InvoiceMail([$product], $user));
+        // Cek stok
+        if ($product->stock < 1) {
+            return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
+        }
+
+        // Kurangi stok
+        $product->stock -= 1;
+        $product->save();
+
+        // Kirim invoice satu produk (bisa dijadikan array)
+        $item = [
+            $product->id => [
+                "name" => $product->name,
+                "quantity" => 1,
+                "price" => $product->price,
+                "image" => $product->image,
+            ]
+        ];
+
+        Mail::to($user->email)->send(new InvoiceMail($item, $user));
 
         return redirect('/')->with('success', 'Checkout berhasil! Invoice dikirim ke email.');
     }
-
 }

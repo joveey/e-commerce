@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -21,15 +22,16 @@ class AdminProductController extends Controller
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'image' => 'nullable|image'
         ]);
-
+         
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');
         }
 
         Product::create($data);
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     public function edit(Product $product) {
@@ -41,6 +43,7 @@ class AdminProductController extends Controller
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'image' => 'nullable|image'
         ]);
 
@@ -52,7 +55,7 @@ class AdminProductController extends Controller
         }
 
         $product->update($data);
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     public function destroy(Product $product) {
@@ -60,11 +63,10 @@ class AdminProductController extends Controller
             Storage::disk('public')->delete($product->image);
         }
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
-    public function show($id)
-    {
+    public function show($id) {
         $product = Product::findOrFail($id);
         return view('admin.products.show', compact('product'));
     }

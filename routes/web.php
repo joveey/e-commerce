@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// Landing
 Route::get('/', [ProductController::class, 'landing'])->name('landing');
 
-// Produk detail untuk semua user (guest bisa lihat lalu diarahkan ke login)
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+// Produk detail untuk user biasa
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('user.products.show');
 
 // Authenticated + Verified users
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -40,9 +41,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/product/{id}', [CartController::class, 'checkoutSingle'])->name('cart.checkout.single');
 });
 
-// Admin Only
+// Admin Routes (resource) — pakai prefix dan alias khusus agar tidak tabrakan
 Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function () {
-    Route::resource('products', AdminProductController::class)->names('admin.products');
+    Route::resource('products', AdminProductController::class)->names([
+        'index'   => 'products.index',
+        'create'  => 'products.create',
+        'store'   => 'products.store',
+        'show'    => 'products.show',
+        'edit'    => 'products.edit',
+        'update'  => 'products.update',
+        'destroy' => 'products.destroy',
+    ]);
 });
 
 require __DIR__.'/auth.php';

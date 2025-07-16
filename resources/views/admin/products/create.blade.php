@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-xl mx-auto p-6 bg-white rounded shadow">
     <h2 class="text-xl font-bold mb-4">Tambah Produk</h2>
-    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-4">
             <label class="block">Nama Produk</label>
@@ -16,6 +16,10 @@
         <div class="mb-4">
             <label class="block">Harga</label>
             <input type="number" name="price" step="0.01" class="w-full border rounded px-3 py-2" required>
+        </div>
+        <div class="mb-4">
+            <label class="block">Stok</label>
+            <input type="number" name="stock" class="w-full border rounded px-3 py-2" required>
         </div>
         <div class="mb-4">
             <label class="block">Gambar</label>
