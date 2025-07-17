@@ -15,8 +15,9 @@
             <h1 class="text-2xl font-semibold text-gray-800 mb-2">{{ $product->name }}</h1>
             <p class="text-2xl text-pink-600 font-bold mb-4">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
             <p class="text-sm text-gray-700 mb-4">Stok tersedia: <span class="font-semibold">{{ $product->stock }}</span></p>
+            <p class="text-gray-700 mb-1 font-semibold">Deskripsi Produk:</p>
+            <p class="text-gray-700 mb-6">{{ $product->description }}</p>
 
-            <p class="text-gray-700 mb-6">Deskripsi produk akan ditambahkan di sini.</p>
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <form method="POST" action="{{ route('cart.add', $product->id) }}">
