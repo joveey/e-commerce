@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Cart;
+use App\Models\Order;
 
+/**
+ * @property-read \App\Models\Cart|null $cart
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders // Add this line
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -44,4 +50,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'is_admin' => 'boolean',
     ];
+
+    public function cart()  
+    {
+        return $this->hasOne(Cart::class);
+    }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

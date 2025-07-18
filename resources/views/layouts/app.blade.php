@@ -13,6 +13,9 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Alpine.js for auto-hide flash message (optional) -->
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
@@ -26,6 +29,31 @@
                 </div>
             </header>
         @endif
+
+        <!-- Flash Messages -->
+        <div class="max-w-2xl mx-auto px-4 mt-4">
+            @if (session('success'))
+                <div 
+                    x-data="{ show: true }" 
+                    x-init="setTimeout(() => show = false, 3000)" 
+                    x-show="show"
+                    class="bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded shadow mb-4 transition-all"
+                >
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div 
+                    x-data="{ show: true }" 
+                    x-init="setTimeout(() => show = false, 3000)" 
+                    x-show="show"
+                    class="bg-red-100 border border-red-400 text-red-800 px-4 py-3 rounded shadow mb-4 transition-all"
+                >
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
 
         <!-- Page Content -->
         <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">

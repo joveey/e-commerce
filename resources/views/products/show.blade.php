@@ -22,6 +22,11 @@
             <div class="flex flex-col sm:flex-row gap-4">
                 <form method="POST" action="{{ route('cart.add', $product->id) }}">
                     @csrf
+                    <div class="flex items-center gap-2 mb-4">
+                    <label for="quantity" class="font-semibold">Jumlah:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->stock }}"
+                        class="border rounded px-2 py-1 w-20">
+                    </div>
                     <button type="submit"
                         class="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded shadow text-center">
                         Tambah ke Keranjang
