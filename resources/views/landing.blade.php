@@ -4,20 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verse Beauty | E-Commerce</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
+            background: linear-gradient(120deg, #738fbd 0%, #a8c3d4 30%, #dbd6df 55%, #eec6c7 75%, #db88a4 90%, #cc8eb1 100%);
         }
-        .product-card {
-            transition: all 0.3s ease;
+        .glass {
+            background: rgba(255,255,255,0.60);
+            box-shadow: 0 8px 32px 0 rgba(115, 143, 189, 0.10);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 18px;
+            border: 1px solid #eec6c7;
         }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        .banner-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #3a4a6b;
+            letter-spacing: 0.5px;
+        }
+        .banner-desc {
+            color: #a84d6b;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        .kategori-label {
+            font-size: 0.98rem;
+            color: #4a5a7b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        .kategori-link {
+            background: linear-gradient(90deg, #eec6c7 0%, #db88a4 100%);
+            color: #3a4a6b;
+            font-weight: 500;
+            border: 1px solid #cc8eb1;
+            transition: background 0.2s, color 0.2s;
+        }
+        .kategori-link:hover {
+            background: #cc8eb1;
+            color: #fff;
+        }
+        .produk-terlaris-title {
+            color: #3a4a6b;
+        }
+        h3, h2, .text-xl, .text-center, .font-bold, .font-semibold {
+            color: #3a4a6b !important;
+        }
+        .glass a, .glass span, .glass p, .glass label {
+            color: #3a4a6b;
         }
     </style>
 </head>
@@ -25,9 +62,15 @@
 
 <!-- Navbar -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="w-full px-6 py-4 flex justify-between items-center">
-        <a href="/" class="text-2xl font-bold text-pink-500">Verse Beauty</a>
-        <div class="flex items-center space-x-4">
+    <div class="w-full px-6 py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div class="flex items-center gap-6 w-full md:w-auto">
+            <a href="/" class="text-2xl font-semibold tracking-wide text-[#738fbd] whitespace-nowrap">Verse Beauty</a>
+            <form action="#" method="GET" class="flex items-center w-full max-w-md ml-0 md:ml-4">
+                <input type="text" name="search" class="w-full px-4 py-2 border border-[#a8c3d4] rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#db88a4] bg-[#dbd6df] placeholder-[#738fbd]" placeholder="Cari produk, brand, makeup...">
+                <button type="submit" class="px-4 py-2 bg-[#db88a4] text-white rounded-r-lg hover:bg-[#738fbd]">Cari</button>
+            </form>
+        </div>
+        <div class="flex items-center space-x-4 mt-2 md:mt-0">
             @auth
                 <a href="{{ route('cart.index') }}" class="relative group">
                     <i class="ph ph-shopping-cart text-2xl text-gray-700 group-hover:text-pink-500 transition"></i>
@@ -44,10 +87,13 @@
 <!-- Banner -->
 <section class="bg-white">
     <div class="w-full px-6 py-8">
-        <div class="bg-[url('https://source.unsplash.com/featured/?beauty,makeup')] bg-cover bg-center rounded-xl h-64 flex items-center justify-center">
-            <div class="bg-white bg-opacity-80 p-6 rounded text-center">
-                <h2 class="text-3xl font-bold text-pink-600">Diskon Spesial Bulan Ini!</h2>
-                <p class="text-gray-700 mt-2">Dapatkan potongan hingga 50% untuk produk pilihan.</p>
+        <div class="glass flex flex-col md:flex-row items-center justify-between px-8 py-8 gap-6 relative overflow-hidden">
+            <div>
+                <div class="banner-title mb-2">{{ $discountTitle ?? 'Ekstra Diskon Spesial!' }}</div>
+                <div class="banner-desc mb-3">{{ $discountDesc ?? 'Dapatkan penawaran menarik untuk produk pilihan.' }}</div>
+                @if(isset($discountImage))
+                    <img src="{{ asset('storage/' . $discountImage) }}" alt="Diskon" class="rounded-lg shadow max-w-xs w-full mb-2">
+                @endif
             </div>
         </div>
     </div>
@@ -56,19 +102,19 @@
 <!-- Kategori -->
 <section class="py-8">
     <div class="w-full px-6">
-        <h3 class="text-xl font-bold mb-4">Kategori Produk</h3>
-        <div class="flex flex-wrap gap-4">
-            <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full hover:bg-pink-200 cursor-pointer">Skincare</span>
-            <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full hover:bg-pink-200 cursor-pointer">Makeup</span>
-            <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full hover:bg-pink-200 cursor-pointer">Body Care</span>
-            <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full hover:bg-pink-200 cursor-pointer">Hair Care</span>
+        <h3 class="text-xl font-semibold text-[#738fbd] mb-6">Kategori Makeup</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <a href="{{ route('products.category', 'skincare') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Skincare</a>
+            <a href="{{ route('products.category', 'makeup') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Makeup</a>
+            <a href="{{ route('products.category', 'body-care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Body Care</a>
+            <a href="{{ route('products.category', 'hair-care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Hair Care</a>
         </div>
     </div>
 </section>
 
 <!-- Produk Terlaris -->
 <section class="mt-12 px-6">
-    <h2 class="text-xl font-bold text-center mb-6">Produk Terlaris</h2>
+    <h2 class="text-xl font-bold text-center mb-6 produk-terlaris-title">Produk Terlaris</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         @foreach ($products as $product)
             <a href="{{ route('user.products.show', $product->id) }}"
