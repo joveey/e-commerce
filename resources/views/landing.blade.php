@@ -99,6 +99,19 @@
     </div>
 </section>
 
+<!-- Kategori -->
+<section class="py-8">
+    <div class="w-full px-6">
+        <h3 class="text-xl font-semibold text-[#738fbd] mb-6">Kategori Makeup</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <a href="{{ url('/') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Skincare</a>
+            <a href="{{ url('/') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Makeup</a>
+            <a href="{{ url('/') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Body Care</a>
+            <a href="{{ url('/') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Hair Care</a>
+        </div>
+    </div>
+</section>
+
 <!-- Produk Terlaris -->
 <section class="mt-12 px-6">
     <h2 class="text-xl font-bold text-center mb-6 produk-terlaris-title">Produk Terlaris</h2>
