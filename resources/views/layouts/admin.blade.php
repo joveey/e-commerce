@@ -12,7 +12,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white shadow-md">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-pink-600 text-2xl font-bold">Verse Beauty</h2>
+                <a href="{{ route('landing') }}" class="text-2xl font-bold text-pink-500">Verse Beauty</a>
             </div>
             <nav class="mt-6">
                 <ul class="space-y-2 px-4 text-gray-700">
