@@ -98,28 +98,18 @@
                     </div>
                 </div>
 
-                <!-- Kategori Makeup Estetik -->
-                <div class="mb-10">
-                    <h2 class="text-xl font-semibold text-[#b87d5a] mb-6">Kategori Makeup</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="glass flex flex-col items-center p-4 hover:shadow-lg transition cursor-pointer">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Lipstik" class="w-12 h-12 mb-2 kategori-icon">
-                            <span class="kategori-label">Lipstik</span>
-                        </div>
-                        <div class="glass flex flex-col items-center p-4 hover:shadow-lg transition cursor-pointer">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921823.png" alt="Foundation" class="w-12 h-12 mb-2 kategori-icon">
-                            <span class="kategori-label">Foundation</span>
-                        </div>
-                        <div class="glass flex flex-col items-center p-4 hover:shadow-lg transition cursor-pointer">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921824.png" alt="Eyeshadow" class="w-12 h-12 mb-2 kategori-icon">
-                            <span class="kategori-label">Eyeshadow</span>
-                        </div>
-                        <div class="glass flex flex-col items-center p-4 hover:shadow-lg transition cursor-pointer">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921825.png" alt="Blush On" class="w-12 h-12 mb-2 kategori-icon">
-                            <span class="kategori-label">Blush On</span>
+                <!-- Kategori Makeup Estetik (disamakan dengan landing.blade.php) -->
+                <section class="py-8">
+                    <div class="w-full px-6">
+                        <h3 class="text-xl font-semibold text-[#738fbd] mb-6">Kategori Makeup</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <a href="{{ route('products.byCategory', 'Skincare') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Skincare</a>
+                            <a href="{{ route('products.byCategory', 'Makeup') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Makeup</a>
+                            <a href="{{ route('products.byCategory', 'Body Care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Body Care</a>
+                            <a href="{{ route('products.byCategory', 'Hair Care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Hair Care</a>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <!-- Konten lama (jika ingin tetap ditampilkan, bisa diletakkan di bawah) -->
                 <!-- ...existing code... -->

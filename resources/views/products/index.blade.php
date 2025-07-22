@@ -2,11 +2,13 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+@if(isset($category))
+    <h1 class="text-2xl font-bold mb-6">Produk Kategori: {{ $category }}</h1>
+@else
     <h1 class="text-2xl font-bold mb-6">Daftar Produk</h1>
+@endif
 
-    <a href="{{ route('products.create') }}" class="mb-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-        + Tambah Produk
-    </a>
+
 
     @if(session('success'))
         <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
@@ -21,7 +23,7 @@
                 <th class="px-4 py-3 border">Nama</th>
                 <th class="px-4 py-3 border">Harga</th>
                 <th class="px-4 py-3 border">Gambar</th>
-                <th class="px-4 py-3 border">Aksi</th>
+                <!-- <th class="px-4 py-3 border">Aksi</th> -->
             </tr>
         </thead>
         <tbody>
@@ -37,6 +39,7 @@
                         <span class="text-gray-400 italic">Tidak ada</span>
                     @endif
                 </td>
+                <!--
                 <td class="px-4 py-3 border">
                     <div class="flex gap-2">
                         <a href="{{ route('products.edit', $product->id) }}"
@@ -54,6 +57,7 @@
                         </form>
                     </div>
                 </td>
+                -->
             </tr>
             @empty
             <tr>
