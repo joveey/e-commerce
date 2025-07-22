@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 // Landing
 Route::get('/', [ProductController::class, 'landing'])->name('landing');
 
-// Produk berdasarkan kategori
-Route::get('/kategori/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+// Produk berdasarkan kategori (pakai id)
+Route::get('/kategori/{id}', [ProductController::class, 'byCategory'])->name('products.byCategory');
 
 // Produk detail untuk user biasa
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('user.products.show');

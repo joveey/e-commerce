@@ -16,55 +16,25 @@
         </div>
     @endif
 
-    <table class="w-full border-collapse">
-        <thead>
-            <tr class="bg-gray-200 text-left">
-                <th class="px-4 py-3 border">#</th>
-                <th class="px-4 py-3 border">Nama</th>
-                <th class="px-4 py-3 border">Harga</th>
-                <th class="px-4 py-3 border">Gambar</th>
-                <!-- <th class="px-4 py-3 border">Aksi</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($products as $product)
-            <tr class="border-t hover:bg-gray-50">
-                <td class="px-4 py-3 border">{{ $loop->iteration }}</td>
-                <td class="px-4 py-3 border">{{ $product->name }}</td>
-                <td class="px-4 py-3 border">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                <td class="px-4 py-3 border">
-                    @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="Gambar Produk" class="w-20 h-20 object-cover rounded border">
-                    @else
-                        <span class="text-gray-400 italic">Tidak ada</span>
-                    @endif
-                </td>
-                <!--
-                <td class="px-4 py-3 border">
-                    <div class="flex gap-2">
-                        <a href="{{ route('products.edit', $product->id) }}"
-                           class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                           Edit
-                        </a>
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                              onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                Hapus
-                            </button>
-                        </form>
-                    </div>
-                </td>
-                -->
-            </tr>
-            @empty
-            <tr>
-                <td colspan="5" class="text-center py-4 text-gray-500 italic">Belum ada produk.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        @forelse($products as $product)
+            <a href="{{ route('user.products.show', $product->id) }}"
+               class="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden product-card">
+                <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
+                    <img src="{{ asset('storage/' . $product->image) }}"
+                         alt="{{ $product->name }}"
+                         class="max-h-full max-w-full object-contain p-2" />
+                </div>
+                <div class="p-3">
+                    <h3 class="text-sm font-semibold text-gray-800 truncate">{{ $product->name }}</h3>
+                    <p class="text-green-600 text-sm">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    <p class="text-sm text-gray-600 mt-1">Stok: {{ $product->stock }}</p>
+                    <p class="text-gray-500 text-xs mt-1">Klik untuk melihat detail</p>
+                </div>
+            </a>
+        @empty
+            <div class="col-span-full text-center py-4 text-gray-500 italic">Belum ada produk.</div>
+        @endforelse
+    </div>
 </div>
 @endsection

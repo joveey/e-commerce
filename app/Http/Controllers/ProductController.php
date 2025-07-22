@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index() {
         $products = Product::all();
-        return view('products.index', compact('products'));
+        $categories = \App\Models\Category::all();
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function show($id)
@@ -21,12 +23,17 @@ class ProductController extends Controller
     public function landing() 
     {
         $products = Product::all();
-        return view('landing', compact('products'));
+        $categories = \App\Models\Category::all();
+        return view('landing', compact('products', 'categories'));
     }
 
-    public function byCategory($category)
+    public function byCategory($id)
     {
-        $products = Product::where('category', $category)->get();
-        return view('products.index', compact('products', 'category'));
+        $category = Category::findOrFail($id);
+        $products = Product::where('category_id', $id)->get();
+        return view('products.index', [
+            'products' => $products,
+            'category' => $category->name
+        ]);
     }
 }

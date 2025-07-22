@@ -12,6 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // 
+        \App\Models\Category::insert([
+            ['name' => 'Skincare'],
+            ['name' => 'Makeup'],
+            ['name' => 'Body Care'],
+            ['name' => 'Hair Care'],
+        ]);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

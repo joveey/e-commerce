@@ -11,6 +11,15 @@
             <input type="text" name="name" value="{{ $product->name }}" class="w-full border px-3 py-2" required>
         </div>
         <div class="mb-4">
+            <label>Kategori</label>
+            <select name="category_id" class="w-full border px-3 py-2" required>
+                <option value="">-- Pilih Kategori --</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-4">
             <label>Deskripsi</label>
             <textarea name="description" class="w-full border px-3 py-2" required>{{ $product->description }}</textarea>
         </div>

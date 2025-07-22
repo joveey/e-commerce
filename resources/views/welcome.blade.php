@@ -103,10 +103,11 @@
                     <div class="w-full px-6">
                         <h3 class="text-xl font-semibold text-[#738fbd] mb-6">Kategori Makeup</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <a href="{{ route('products.byCategory', 'Skincare') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Skincare</a>
-                            <a href="{{ route('products.byCategory', 'Makeup') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Makeup</a>
-                            <a href="{{ route('products.byCategory', 'Body Care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Body Care</a>
-                            <a href="{{ route('products.byCategory', 'Hair Care') }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">Hair Care</a>
+                            @if(isset($categories))
+                                @foreach($categories as $category)
+                                    <a href="{{ route('products.byCategory', $category->id) }}" class="glass kategori-link flex items-center justify-center py-4 rounded-lg text-center">{{ $category->name }}</a>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </section>
