@@ -20,9 +20,6 @@ class ProductController extends Controller
 
     public function landing() 
     {
-        if (auth()->check() && auth()->user()->is_admin) {
-            return redirect()->route('admin.dashboard');
-        }
         $products = Product::all();
         return view('landing', compact('products'));
     }

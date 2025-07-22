@@ -64,7 +64,7 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="w-full px-6 py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div class="flex items-center gap-6 w-full md:w-auto">
-            <a href="/" class="text-2xl font-semibold tracking-wide text-[#738fbd] whitespace-nowrap">Verse Beauty</a>
+            <a href="{{ route('landing') }}" class="text-2xl font-semibold tracking-wide text-[#738fbd] whitespace-nowrap">Verse Beauty</a>
             <form action="#" method="GET" class="flex items-center w-full max-w-md ml-0 md:ml-4">
                 <input type="text" name="search" class="w-full px-4 py-2 border border-[#a8c3d4] rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#db88a4] bg-[#dbd6df] placeholder-[#738fbd]" placeholder="Cari produk, brand, makeup...">
                 <button type="submit" class="px-4 py-2 bg-[#db88a4] text-white rounded-r-lg hover:bg-[#738fbd]">Cari</button>
@@ -83,6 +83,16 @@
         </div>
     </div>
 </nav>
+
+@auth
+    @if(auth()->user() && auth()->user()->is_admin)
+        <div class="w-full px-6 mt-4 flex justify-end">
+            <a href="{{ route('admin.dashboard') }}" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 font-semibold shadow">
+                Ke Dashboard Admin
+            </a>
+        </div>
+    @endif
+@endauth
 
 <!-- Banner -->
 <section class="bg-white">
