@@ -1,12 +1,11 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto">
+    {{-- UBAH INI: max-w-7xl menjadi max-w-screen-xl --}}
+    <div class="max-w-screen-xl mx-auto">
         <div class="flex justify-between items-center px-4 py-3">
-            <!-- Brand -->
             <a href="{{ route('landing') }}" class="text-2xl font-bold text-pink-500">
                 Verse Beauty
             </a>
 
-            <!-- Search Bar -->
             <div class="flex-1 max-w-2xl px-6">
                 <div class="relative">
                     <input type="text" placeholder="Cari produk..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50">
@@ -16,9 +15,7 @@
                 </div>
             </div>
 
-            <!-- Right Section -->
             <div class="flex items-center space-x-6">
-                <!-- Cart with Badge -->
                 @php
                     $cartItemCount = 0;
                     if (Auth::check()) {
@@ -35,7 +32,6 @@
                     @endif
                 </a>
 
-                <!-- Profile Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 focus:outline-none">
@@ -51,14 +47,13 @@
 
                 <x-slot name="content">
                     <x-dropdown-link :href="route('profile.edit')">
-                        {{ __('Edit Profil') }}
+                        {{ __('Profil') }}
                     </x-dropdown-link>
 
                     <x-dropdown-link :href="route('orders.history')">
                         {{ __('Riwayat Pesanan') }}
                     </x-dropdown-link>
 
-                    <!-- Logout -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-dropdown-link :href="route('logout')"
@@ -67,7 +62,8 @@
                         </x-dropdown-link>
                     </form>
                 </x-slot>
-            </x-dropdown>
+                </x-dropdown>
+            </div>
         </div>
     </div>
 </nav>

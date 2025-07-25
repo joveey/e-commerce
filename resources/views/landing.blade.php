@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Banner -->
 <section>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="glass flex flex-col md:flex-row items-center justify-between p-8 gap-6">
@@ -16,13 +15,12 @@
     </div>
 </section>
 
-<!-- Kategori -->
 <section class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-xl font-semibold text-gray-900 mb-6">Kategori</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             @foreach($categories as $category)
-                <a href="{{ route('products.byCategory', $category->id) }}" 
+                <a href="{{ route('products.byCategory', $category->id) }}"
                    class="kategori-link flex items-center justify-center p-4 rounded-lg shadow-sm hover:shadow text-center">
                     {{ $category->name }}
                 </a>
@@ -31,7 +29,6 @@
     </div>
 </section>
 
-<!-- Produk Terlaris -->
 <section class="mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-white text-center mb-8">Produk Terlaris</h2>
@@ -51,6 +48,27 @@
                             </div>
                         @endif
                         <h3 class="text-sm font-semibold text-gray-900 truncate">{{ $product->name }}</h3>
+                        {{-- Bagian Rating Ditambahkan di Sini --}}
+                        <div class="flex items-center mt-1 mb-1">
+                            <div class="flex items-center text-yellow-400">
+                                @php
+                                    // Pastikan average_rating ada dan merupakan angka
+                                    $averageRating = $product->average_rating ?? 0;
+                                    $roundedRating = round($averageRating);
+                                @endphp
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $roundedRating)
+                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                    @else
+                                        <i class="far fa-star text-yellow-400 text-xs"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">
+                                ({{ $product->rating_count ?? 0 }} ulasan)
+                            </span>
+                        </div>
+                        {{-- Akhir Bagian Rating --}}
                         <p class="text-pink-600 text-sm font-medium mt-1">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p class="text-gray-900 text-sm mt-1">Stok: {{ $product->stock }}</p>
                     </div>
@@ -60,7 +78,6 @@
     </div>
 </section>
 
-<!-- Testimoni -->
 <section class="py-12 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-2xl font-bold text-white text-center mb-8">Apa Kata Mereka?</h3>
