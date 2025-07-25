@@ -209,4 +209,27 @@ class CartController extends Controller
 
         return redirect('/')->with('success', 'Checkout berhasil! Invoice dikirim ke email.');
     }
+
+    /**
+     * Update cart item quantity via AJAX
+     */
+    public function updateAjax(Request $request, $itemId)
+    {
+        $item = CartItem::findOrFail($itemId);
+        if ($item->cart->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        $quantity = max(1, (int) $request->input('quantity'));
+        if ($quantity > $item->product->stock) {
+            $quantity = $item->product->stock;
+        }
+        $item->quantity = $quantity;
+        $item->save();
+        $subtotal = $item->product->price * $item->quantity;
+        return response()->json([
+            'success' => true,
+            'quantity' => $item->quantity,
+            'subtotal_formatted' => number_format($subtotal, 0, ',', '.')
+        ]);
+    }
 }

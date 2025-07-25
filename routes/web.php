@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Cart
+    Route::patch('/cart/update-ajax/{id}', [CartController::class, 'updateAjax'])->name('cart.updateAjax');
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::patch('/cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');

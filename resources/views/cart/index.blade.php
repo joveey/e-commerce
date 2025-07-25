@@ -1,61 +1,123 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-10">
-    <h2 class="text-2xl font-semibold mb-6">Keranjang Belanja</h2>
-
-    @if (session('success'))
-        <div class="mb-4 text-green-600">{{ session('success') }}</div>
-    @endif
-
-    @if (session('error'))
-        <div class="mb-4 text-red-600">{{ session('error') }}</div>
-    @endif
+<div class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-bold mb-6">Keranjang Belanja</h2>
 
     @if ($items->count() > 0)
-        <div class="space-y-6">
-            @php $total = 0; @endphp
-            @foreach($items as $item)
-                <div class="bg-white shadow rounded-lg p-4 flex justify-between items-center">
-                    <div class="flex items-center space-x-4">
-                        <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">
-                        <div>
-                            <h4 class="font-semibold">{{ $item->product->name }}</h4>
-                            <p>Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
+        @php
+            $total = 0;
+            $totalItems = 0;
+        @endphp
 
-                            <!-- Form untuk update quantity -->
-                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="mt-2 flex items-center space-x-2">
-                                @csrf
-                                @method('PATCH')
-                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock }}"
-                                    class="w-16 border-gray-300 rounded text-center">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm">Perbarui Jumlah</button>
-                            </form>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Product List -->
+            <div class="lg:col-span-2 space-y-4">
+                @foreach($items as $item)
+                    @php
+                        $subTotal = $item->product->price * $item->quantity;
+                        $total += $subTotal;
+                        $totalItems += $item->quantity;
+                    @endphp
+
+                    <div class="flex items-center bg-white rounded-lg shadow p-4 justify-between">
+                        <div class="flex items-center space-x-4">
+                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-20 h-20 object-cover rounded">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">{{ $item->product->name }}</h4>
+                                <p class="text-gray-600">Rp{{ number_format($item->product->price, 0, ',', '.') }} x <span id="qty-{{ $item->id }}">{{ $item->quantity }}</span></p>
+                                <p class="text-gray-900 font-medium mt-1">Subtotal: Rp<span id="subtotal-{{ $item->id }}">{{ number_format($subTotal, 0, ',', '.') }}</span></p>
+                                <!-- Quantity Update Buttons -->
+                                <div class="flex items-center mt-2 space-x-2">
+                                    <button type="button" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" onclick="decreaseCartQuantity({{ $item->id }}, {{ $item->product->stock }}, {{ $item->product->price }})">-</button>
+                                    <span class="px-3" id="quantity-{{ $item->id }}">{{ $item->quantity }}</span>
+                                    <button type="button" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" onclick="increaseCartQuantity({{ $item->id }}, {{ $item->product->stock }}, {{ $item->product->price }})">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="{{ route('cart.remove', $item->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">Ringkasan Pesanan</h3>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Total Produk</span>
+                            <span>{{ $totalItems }} item</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Subtotal</span>
+                            <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-3">
+                            <div class="flex justify-between text-lg font-semibold text-gray-900">
+                                <span>Total</span>
+                                <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Form untuk hapus item -->
-                    <form action="{{ route('cart.remove', $item->id) }}" method="POST" onsubmit="return confirm('Hapus produk ini dari keranjang?')">
+                    <form method="POST" action="{{ route('cart.checkout') }}">
                         @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">Hapus dari Keranjang</button>
+                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2">
+                            <span>Checkout</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </button>
                     </form>
                 </div>
-                @php $total += $item->product->price * $item->quantity; @endphp
-            @endforeach
-        </div>
-
-        <div class="text-right mt-6">
-            <p class="text-xl font-semibold">Total: Rp {{ number_format($total, 0, ',', '.') }}</p>
-            <form method="POST" action="{{ route('cart.checkout') }}">
-                @csrf
-                <button type="submit" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded">
-                    Checkout
-                </button>
-            </form>
+            </div>
         </div>
     @else
         <p class="text-gray-600">Keranjang kamu kosong.</p>
     @endif
 </div>
+<script>
+function increaseCartQuantity(itemId, maxStock, price) {
+    let qtySpan = document.getElementById('quantity-' + itemId);
+    let qty = parseInt(qtySpan.innerText);
+    if (qty < maxStock) {
+        updateCartAjax(itemId, qty + 1, price);
+    }
+}
+
+function decreaseCartQuantity(itemId, maxStock, price) {
+    let qtySpan = document.getElementById('quantity-' + itemId);
+    let qty = parseInt(qtySpan.innerText);
+    if (qty > 1) {
+        updateCartAjax(itemId, qty - 1, price);
+    }
+}
+
+function updateCartAjax(itemId, newQty, price) {
+    fetch("{{ url('/cart/update-ajax') }}/" + itemId, {
+        method: "PATCH",
+        headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ quantity: newQty })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            document.getElementById('quantity-' + itemId).innerText = data.quantity;
+            document.getElementById('qty-' + itemId).innerText = data.quantity;
+            document.getElementById('subtotal-' + itemId).innerText = data.subtotal_formatted;
+            // TODO: update total/subtotal keranjang jika ingin
+        }
+    });
+}
+</script>
 @endsection
+    
