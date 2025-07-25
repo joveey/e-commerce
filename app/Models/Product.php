@@ -14,4 +14,19 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(ProductRating::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->ratings()->avg('rating') ?? 0;
+    }
+
+    public function getRatingCountAttribute()
+    {
+        return $this->ratings()->count();
+    }
 }

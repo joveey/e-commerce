@@ -1,32 +1,61 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="w-full px-6 py-4 flex justify-between items-center">
-        <!-- Brand -->
-        <a href="{{ route('landing') }}" class="text-2xl font-bold text-pink-500">Verse Beauty</a>
-
-        <!-- Right Section -->
-        <div class="flex items-center space-x-4">
-            <!-- Cart -->
-            <a href="{{ route('cart.index') }}" class="relative group flex items-center text-gray-700 hover:text-pink-500 transition">
-                <i class="ph ph-shopping-cart text-2xl"></i>
-                <span class="ml-1 text-sm">Cart</span>
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center px-4 py-3">
+            <!-- Brand -->
+            <a href="{{ route('landing') }}" class="text-2xl font-bold text-pink-500">
+                Verse Beauty
             </a>
 
-            <!-- Profile Dropdown -->
-            <x-dropdown align="right" width="48">
-                <x-slot name="trigger">
-                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 hover:text-pink-500 focus:outline-none transition">
-                        {{ Auth::check() ? Auth::user()->name : 'Profil' }}
-                        <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.584l3.71-4.354a.75.75 0 111.14.976l-4.25 5a.75.75 0 01-1.14 0l-4.25-5a.75.75 0 01.02-1.06z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </x-slot>
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-2xl px-6">
+                <div class="relative">
+                    <input type="text" placeholder="Cari produk..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50">
+                    <span class="absolute left-3 top-2.5">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex items-center space-x-6">
+                <!-- Cart with Badge -->
+                @php
+                    $cartItemCount = 0;
+                    if (Auth::check()) {
+                        $cart = \App\Models\Cart::with('items')->where('user_id', Auth::id())->first();
+                        $cartItemCount = $cart ? $cart->items->sum('quantity') : 0;
+                    }
+                @endphp
+                <a href="{{ route('cart.index') }}" class="relative group">
+                    <i class="fas fa-shopping-cart text-xl text-gray-700 hover:text-pink-500 transition-colors"></i>
+                    @if($cartItemCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            {{ $cartItemCount }}
+                        </span>
+                    @endif
+                </a>
+
+                <!-- Profile Dropdown -->
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="flex items-center space-x-3 focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
+                                <i class="fas fa-user text-pink-500"></i>
+                            </div>
+                            <div class="flex items-center text-gray-700 hover:text-pink-500">
+                                <span class="text-sm font-medium">{{ Auth::check() ? Auth::user()->name : 'Profil' }}</span>
+                                <i class="fas fa-chevron-down text-xs ml-2"></i>
+                            </div>
+                        </button>
+                    </x-slot>
 
                 <x-slot name="content">
                     <x-dropdown-link :href="route('profile.edit')">
                         {{ __('Edit Profil') }}
+                    </x-dropdown-link>
+
+                    <x-dropdown-link :href="route('orders.history')">
+                        {{ __('Riwayat Pesanan') }}
                     </x-dropdown-link>
 
                     <!-- Logout -->

@@ -105,6 +105,20 @@
                         <!-- Product Name -->
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->name }}</h1>
 
+                        <!-- Rating -->
+                        <div class="flex items-center space-x-2 mb-3">
+                            <div class="flex items-center">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= round($product->average_rating))
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    @else
+                                        <i class="far fa-star text-yellow-400"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span class="text-gray-500 text-sm">({{ $product->rating_count }} ulasan)</span>
+                        </div>
+
                         <!-- Category -->
                         <div class="block mb-3">
                             @if($product->category)
@@ -126,11 +140,6 @@
                                 </div>
                             @endif
                         </div>
-                        
-                        <!-- Description -->
-                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                            {{ $product->description }}
-                        </p>
                         
                         <!-- More Info Toggle -->
                         <button class="text-gray-500 font-medium flex items-center space-x-2 mb-8" onclick="toggleMoreInfo()">
@@ -188,30 +197,49 @@
             </div>
         </div>
 
-        <!-- Features Section -->
+        <!-- Product Description Section -->
         <div class="bg-white rounded-3xl mt-8 p-8 lg:p-12">
-            <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">Kenapa Pilih Produk Kami?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">✨</span>
-                    </div>
-                    <h3 class="font-semibold text-gray-900 mb-2">Kualitas Premium</h3>
-                    <p class="text-gray-600">Produk berkualitas tinggi dengan standar internasional.</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">🚚</span>
-                    </div>
-                    <h3 class="font-semibold text-gray-900 mb-2">Pengiriman Cepat</h3>
-                    <p class="text-gray-600">Pengiriman aman dan cepat ke seluruh Indonesia.</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">🛡️</span>
-                    </div>
-                    <h3 class="font-semibold text-gray-900 mb-2">Garansi Resmi</h3>
-                    <p class="text-gray-600">Dilengkapi garansi resmi dan layanan purna jual.</p>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Deskripsi Produk</h2>
+            <div class="prose max-w-none">
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    {{ $product->description }}
+                </p>
+            </div>
+
+            <!-- Product Reviews -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Ulasan Produk</h2>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    @forelse($product->ratings()->with('user')->latest()->get() as $rating)
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-pink-500"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">{{ $rating->user->name }}</div>
+                                        <div class="text-sm text-gray-500">{{ $rating->created_at->diffForHumans() }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $rating->rating)
+                                            <i class="fas fa-star text-yellow-400"></i>
+                                        @else
+                                            <i class="far fa-star text-yellow-400"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                            </div>
+                            @if($rating->review)
+                                <p class="text-gray-600">{{ $rating->review }}</p>
+                            @endif
+                        </div>
+                    @empty
+                        <p class="text-gray-500 text-center py-8">Belum ada ulasan untuk produk ini.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

@@ -48,4 +48,15 @@ class AdminDashboardController extends Controller
         $users = User::latest()->paginate(10); // paginate agar tidak berat
         return view('admin.users.index', compact('users'));
     }
+
+    public function updateOrderStatus(Request $request, \App\Models\Order $order)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,processing,shipped,completed'
+        ]);
+
+        $order->update(['status' => $validated['status']]);
+
+        return back()->with('success', 'Status pesanan berhasil diperbarui.');
+    }
 }

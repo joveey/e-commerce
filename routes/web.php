@@ -4,8 +4,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductRatingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,12 +51,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/product/{id}', [CartController::class, 'checkoutSingle'])->name('cart.checkout.single');
     Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 
+    // Product Ratings
+    Route::post('/products/rate', [ProductRatingController::class, 'store'])->name('products.rate');
+    Route::post('/products/clear-rating-session', [ProductRatingController::class, 'clearRatingSession'])->name('products.clearRatingSession');
+
 });
 
 // Admin Routes (resource) — pakai prefix dan alias khusus agar tidak tabrakan
 Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/orders', [AdminDashboardController::class, 'orders'])->name('orders');
+    Route::get('/orders/completed-history', [AdminOrderController::class, 'completedOrdersHistory'])->name('orders.completedHistory');
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
     Route::resource('products', AdminProductController::class)->names([
         'index'   => 'products.index',

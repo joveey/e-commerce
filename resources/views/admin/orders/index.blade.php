@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Riwayat Checkout Semua User</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Daftar Pesanan Belum Selesai</h1>
 
     <div class="bg-white rounded-lg shadow p-6">
         <div class="overflow-x-auto">
@@ -20,24 +20,36 @@
                 </thead>
                 <tbody>
                     @forelse ($orders as $order)
-                        {{-- Row for order details and the first item --}}
+                        {{-- Hitung rowspan untuk kolom yang akan di-merge (Tanggal, Nama User, Status, Aksi) --}}
+                        {{-- Jika tidak ada item, rowspan tetap 1 --}}
+                        @php
+                            $rowspanCount = $order->items->count() > 0 ? $order->items->count() : 1;
+                        @endphp
+
+                        {{-- Baris pertama untuk setiap order --}}
                         <tr class="bg-gray-50">
-                            <td class="px-4 py-2 border" rowspan="{{ $order->items->count() > 0 ? $order->items->count() : 1 }}">
+                            {{-- Kolom Tanggal (span) --}}
+                            <td class="px-4 py-2 border" rowspan="{{ $rowspanCount }}">
                                 {{ $order->created_at->format('d M Y H:i') }}
                             </td>
-                            <td class="px-4 py-2 border" rowspan="{{ $order->items->count() > 0 ? $order->items->count() : 1 }}">
+                            {{-- Kolom Nama User (span) --}}
+                            <td class="px-4 py-2 border" rowspan="{{ $rowspanCount }}">
                                 {{ $order->user->name }}
                             </td>
+
+                            {{-- Informasi produk pertama atau placeholder jika tidak ada item --}}
                             @if($order->items->isNotEmpty())
                                 <td class="px-4 py-2 border">{{ $order->items->first()->product->name }}</td>
                                 <td class="px-4 py-2 text-center border">{{ $order->items->first()->quantity }}</td>
                                 <td class="px-4 py-2 text-center border">Rp{{ number_format($order->items->first()->price, 0, ',', '.') }}</td>
                             @else
-                                <td class="px-4 py-2 border">-</td>
-                                <td class="px-4 py-2 text-center border">-</td>
-                                <td class="px-4 py-2 text-center border">-</td>
+                                <td class="px-4 py-2 border text-gray-500">-</td>
+                                <td class="px-4 py-2 text-center border text-gray-500">-</td>
+                                <td class="px-4 py-2 text-center border text-gray-500">-</td>
                             @endif
-                            <td class="px-4 py-2 text-center border" rowspan="{{ $order->items->count() > 0 ? $order->items->count() : 1 }}">
+
+                            {{-- Kolom Status (span) --}}
+                            <td class="px-4 py-2 text-center border" rowspan="{{ $rowspanCount }}">
                                 <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="flex items-center justify-center space-x-2">
                                     @csrf
                                     @method('PATCH')
@@ -53,10 +65,13 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-4 py-2 text-center border" rowspan="{{ $order->items->count() > 0 ? $order->items->count() : 1 }}">
-                                </td>
+                            {{-- Kolom Aksi (span) --}}
+                            <td class="px-4 py-2 text-center border" rowspan="{{ $rowspanCount }}">
+                                <a href="{{ route('admin.orders.show', $order) }}" class="text-blue-600 hover:underline text-sm">Detail</a>
+                            </td>
                         </tr>
-                        {{-- Loop for subsequent items of the same order --}}
+
+                        {{-- Loop untuk item order lainnya (mulai dari item kedua) --}}
                         @foreach ($order->items->skip(1) as $item)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-4 py-2 border">{{ $item->product->name }}</td>
@@ -66,7 +81,7 @@
                         @endforeach
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-gray-500 py-4">Belum ada data checkout</td>
+                            <td colspan="7" class="text-center text-gray-500 py-4">Belum ada pesanan yang perlu diproses.</td>
                         </tr>
                     @endforelse
                 </tbody>

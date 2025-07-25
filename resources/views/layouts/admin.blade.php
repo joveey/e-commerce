@@ -31,7 +31,7 @@
                     <li>
                         <a href="{{ route('admin.orders') }}" 
                             class="block py-2 hover:text-pink-600 {{ request()->routeIs('admin.orders') ? 'text-pink-600 font-bold' : '' }}"> 
-                             Riwayat Checkout
+                             Pesanan Aktif
                         </a>
                     </li>
                     <li>
@@ -41,6 +41,12 @@
                         </a>
                     </li>    
                     <li>
+                        <a href="{{ route('admin.orders.completedHistory') }}" 
+                            class="block py-2 hover:text-pink-600 {{ request()->routeIs('admin.orders.completedHistory') ? 'text-pink-600 font-bold' : '' }}"> 
+                             Pesanan Selesai
+                        </a>
+                    </li>
+
                     {{-- Tambahkan menu admin lain di sini --}}
                 </ul>
             </nav>
