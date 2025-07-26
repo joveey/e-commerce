@@ -1,11 +1,9 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    {{-- UBAH INI: max-w-7xl menjadi max-w-screen-xl --}}
     <div class="max-w-screen-xl mx-auto">
         <div class="flex justify-between items-center px-4 py-3">
             <a href="{{ route('landing') }}" class="text-2xl font-bold text-pink-500">
                 Verse Beauty
             </a>
-
             <div class="flex-1 max-w-2xl px-6">
                 <div class="relative">
                     <input type="text" placeholder="Cari produk..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50">
@@ -14,15 +12,8 @@
                     </span>
                 </div>
             </div>
-
             <div class="flex items-center space-x-6">
-                @php
-                    $cartItemCount = 0;
-                    if (Auth::check()) {
-                        $cart = \App\Models\Cart::with('items')->where('user_id', Auth::id())->first();
-                        $cartItemCount = $cart ? $cart->items->sum('quantity') : 0;
-                    }
-                @endphp
+                {{-- Cart Icon - Data dari View Composer --}}
                 <a href="{{ route('cart.index') }}" class="relative group">
                     <i class="fas fa-shopping-cart text-xl text-gray-700 hover:text-pink-500 transition-colors"></i>
                     @if($cartItemCount > 0)
@@ -31,7 +22,8 @@
                         </span>
                     @endif
                 </a>
-
+                
+                {{-- User Dropdown --}}
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 focus:outline-none">
@@ -44,24 +36,31 @@
                             </div>
                         </button>
                     </x-slot>
-
-                <x-slot name="content">
-                    <x-dropdown-link :href="route('profile.edit')">
-                        {{ __('Profil') }}
-                    </x-dropdown-link>
-
-                    <x-dropdown-link :href="route('orders.history')">
-                        {{ __('Riwayat Pesanan') }}
-                    </x-dropdown-link>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-dropdown-link>
-                    </form>
-                </x-slot>
+                    
+                    <x-slot name="content">
+                        @auth
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profil') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('orders.history')">
+                                {{ __('Riwayat Pesanan') }}
+                            </x-dropdown-link>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        @else
+                            <x-dropdown-link :href="route('login')">
+                                {{ __('Login') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('register')">
+                                {{ __('Register') }}
+                            </x-dropdown-link>
+                        @endauth
+                    </x-slot>
                 </x-dropdown>
             </div>
         </div>
