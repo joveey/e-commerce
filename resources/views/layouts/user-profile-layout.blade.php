@@ -173,11 +173,10 @@
             box-shadow: 4px 0 20px rgba(0,0,0,0.1);
             height: calc(100vh - 140px);
             overflow-y: auto;
-            position: sticky; /* <-- 1. Diubah menjadi sticky */
-            top: 140px;
+            position: relative; /* Ubah dari sticky ke relative */
             z-index: 998;
             border: 1px solid rgba(255,255,255,0.2);
-            align-self: flex-start; /* <-- 2. Ditambahkan untuk posisi */
+            align-self: flex-start;
         }
         
         .profile-header {
@@ -580,8 +579,149 @@
             </nav>
         </aside>
 
-        <main class="main-content">
-            @yield('content')
+        <main class="main-content" x-data="{ editMode: false }">
+            <div class="content-header">
+                <div class="content-title">Profil Saya</div>
+                <div class="content-subtitle">
+                    Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun
+                </div>
+            </div>
+            <div class="content-body">
+                <!-- Profil statis -->
+                <div x-show="!editMode" x-transition>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: center;">
+                        <div>
+                            <div class="info-grid" style="display: block;">
+                                <div class="mb-4">
+                                    <label class="info-field-label">Username</label>
+                                    <div class="info-field-value">{{ Auth::user()->username }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Nama</label>
+                                    <div class="info-field-value">{{ Auth::user()->name }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Email</label>
+                                    <div class="info-field-value">{{ Auth::user()->email }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Nomor Telepon</label>
+                                    <div class="info-field-value">{{ Auth::user()->phone }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Alamat</label>
+                                    <div class="info-field-value">{{ Auth::user()->address }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Jenis Kelamin</label>
+                                    <div class="info-field-value">{{ Auth::user()->gender }}</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="info-field-label">Tanggal Lahir</label>
+                                    <div class="info-field-value">
+                                        {{ Auth::user()->birth_date ? \Carbon\Carbon::parse(Auth::user()->birth_date)->format('d F Y') : '-' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="sign-out-btn mt-6" style="background: #e65353;" @click="editMode = true">Edit Profil</button>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; height: 100%;">
+                                <div>
+                                    @if(Auth::user()->avatar)
+                                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Foto Profil" style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=e91e63&color=fff&size=120" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form edit profil -->
+                <form x-show="editMode" x-transition action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                    @csrf
+                    <div>
+                        <div class="info-grid" style="display: block;">
+                            <div class="mb-4">
+                                <label class="info-field-label">Username</label>
+                                <input type="text" name="username" class="info-field-value w-full border rounded px-3 py-2" value="{{ old('username', Auth::user()->username) }}" required>
+                                <div style="font-size: 0.8rem; color: #718096;">Username hanya dapat diubah satu (1) kali.</div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Nama</label>
+                                <input type="text" name="name" class="info-field-value w-full border rounded px-3 py-2" value="{{ old('name', Auth::user()->name) }}" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Email</label>
+                                <input type="text" class="info-field-value w-full border rounded px-3 py-2 bg-gray-100" value="{{ Auth::user()->email }}" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Nomor Telepon</label>
+                                <input type="text" name="phone" class="info-field-value w-full border rounded px-3 py-2" value="{{ old('phone', Auth::user()->phone) }}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Alamat</label>
+                                <input type="text" name="address" class="info-field-value w-full border rounded px-3 py-2" value="{{ old('address', Auth::user()->address) }}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Jenis Kelamin</label>
+                                <div class="flex gap-4 mt-2">
+                                    <label><input type="radio" name="gender" value="Laki-laki" {{ Auth::user()->gender == 'Laki-laki' ? 'checked' : '' }}> Laki-laki</label>
+                                    <label><input type="radio" name="gender" value="Perempuan" {{ Auth::user()->gender == 'Perempuan' ? 'checked' : '' }}> Perempuan</label>
+                                    <label><input type="radio" name="gender" value="Lainnya" {{ Auth::user()->gender == 'Lainnya' ? 'checked' : '' }}> Lainnya</label>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="info-field-label">Tanggal Lahir</label>
+                                <div class="flex gap-2 mt-2">
+                                    <select name="birth_day" class="border rounded px-2 py-1">
+                                        <option value="">Tanggal</option>
+                                        @for($i=1;$i<=31;$i++)
+                                            <option value="{{ $i }}" {{ (old('birth_day', optional(Auth::user()->birth_date)->day) == $i) ? 'selected' : '' }}>{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <select name="birth_month" class="border rounded px-2 py-1">
+                                        <option value="">Bulan</option>
+                                        @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'] as $idx => $bulan)
+                                            <option value="{{ $idx+1 }}" {{ (old('birth_month', optional(Auth::user()->birth_date)->month) == $idx+1) ? 'selected' : '' }}>{{ $bulan }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select name="birth_year" class="border rounded px-2 py-1">
+                                        <option value="">Tahun</option>
+                                        @for($y = date('Y'); $y >= 1940; $y--)
+                                            <option value="{{ $y }}" {{ (old('birth_year', optional(Auth::user()->birth_date)->year) == $y) ? 'selected' : '' }}>{{ $y }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" class="sign-out-btn mt-6" style="background: #e65353;">Simpan</button>
+                            <button type="button" class="sign-out-btn mt-6" style="background: #718096;" @click="editMode = false">Batal</button>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; height: 100%;">
+                            <div>
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Foto Profil" style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=e91e63&color=fff&size=120" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;">
+                                @endif
+                            </div>
+                            <label for="avatar" class="sign-out-btn" style="background: #e91e63; cursor:pointer;">
+                                Pilih Gambar
+                                <input type="file" name="avatar" id="avatar" accept="image/jpeg,image/png" style="display:none;">
+                            </label>
+                            <div style="font-size:0.85rem;color:#718096;">
+                                Ukuran gambar: maks. 1 MB<br>
+                                Format gambar: .JPEG, .PNG
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </main>
     </div>
 
