@@ -1,55 +1,127 @@
 @extends('layouts.app')
 
 @section('content')
-<section>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="glass flex flex-col md:flex-row items-center justify-between p-8 gap-6">
-            <div>
-                <h1 class="banner-title mb-2">{{ $discountTitle ?? 'Ekstra Diskon Spesial!' }}</h1>
-                <p class="banner-desc mb-3">{{ $discountDesc ?? 'Dapatkan penawaran menarik untuk produk pilihan.' }}</p>
+<!-- Hero Section with Discount Banner -->
+<section class="relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div class="absolute inset-0 bg-gradient-to-r from-pink-400/10 to-purple-600/10"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-6 md:p-8">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="inline-flex items-center bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold mb-3">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        Penawaran Terbatas
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 leading-tight">
+                        {{ $discountTitle ?? 'Ekstra Diskon Spesial!' }}
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-6">
+                        {{ $discountDesc ?? 'Dapatkan penawaran menarik untuk produk pilihan yang akan membuat kamu tampil lebih percaya diri.' }}
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                        <button class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                            Belanja Sekarang
+                        </button>
+                        <button class="border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-pink-500 hover:text-pink-500 transition-all duration-300">
+                            Lihat Koleksi
+                        </button>
+                    </div>
+                </div>
                 @if(isset($discountImage))
-                    <img src="{{ asset('storage/' . $discountImage) }}" alt="Diskon" class="rounded-lg shadow max-w-xs w-full mb-2">
+                <div class="flex-1 max-w-sm">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 to-purple-600 rounded-3xl blur-lg opacity-30"></div>
+                        <img src="{{ asset('storage/' . $discountImage) }}" 
+                             alt="Diskon" 
+                             class="relative rounded-3xl shadow-2xl w-full h-auto object-cover">
+                    </div>
+                </div>
                 @endif
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-8">
+<!-- Categories Section -->
+<section class="py-8 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-900 mb-6">Kategori</h2>
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Jelajahi Kategori</h2>
+            <a href="#" class="text-pink-600 hover:text-pink-700 font-medium">Lihat Semua</a>
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             @foreach($categories as $category)
                 <a href="{{ route('products.byCategory', $category->id) }}"
-                   class="kategori-link flex items-center justify-center p-4 rounded-lg shadow-sm hover:shadow text-center">
-                    {{ $category->name }}
+                   class="group bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-4 text-center hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 border border-pink-100">
+                    <div class="bg-gradient-to-br from-pink-100 to-purple-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors duration-300">
+                        {{ $category->name }}
+                    </h3>
                 </a>
             @endforeach
         </div>
     </div>
 </section>
 
-<section class="mt-12">
+<!-- Featured Products Section -->
+<section class="py-8 bg-gradient-to-br from-gray-50 to-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-white text-center mb-8">Produk Terlaris</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                    Produk Terlaris
+                </h2>
+                <p class="text-gray-600 mt-1">Produk pilihan yang paling disukai pelanggan</p>
+            </div>
+            <button class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300">
+                Lihat Semua
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             @foreach ($products as $product)
                 <a href="{{ route('user.products.show', $product->id) }}"
-                   class="glass product-card rounded-lg overflow-hidden">
-                    <div class="w-full h-48 bg-white flex items-center justify-center p-4">
+                   class="group bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 overflow-hidden">
+                    
+                    <!-- Product Image -->
+                    <div class="relative w-full h-48 bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-3 overflow-hidden">
                         <img src="{{ asset('storage/' . $product->image) }}"
                              alt="{{ $product->name }}"
-                             class="max-h-full max-w-full object-contain" />
+                             class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                        
+                        <!-- Hot Badge -->
+                        <div class="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                            HOT
+                        </div>
+                        
+                        <!-- Wishlist Button -->
+                        <button class="absolute top-2 right-2 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 hover:bg-white transition-all duration-300">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
                     </div>
+                    
+                    <!-- Product Info -->
                     <div class="p-4">
                         @if($product->category)
-                            <div class="inline-block bg-pink-100 text-pink-600 px-2 py-1 rounded-full text-xs font-medium mb-2">
+                            <div class="inline-block bg-gradient-to-r from-pink-100 to-purple-100 text-pink-600 px-2 py-1 rounded-full text-xs font-semibold mb-2">
                                 {{ $product->category->name }}
                             </div>
                         @endif
-                        <h3 class="text-sm font-semibold text-gray-900 truncate">{{ $product->name }}</h3>
-                        {{-- Bagian Rating Ditambahkan di Sini --}}
-                        <div class="flex items-center mt-1 mb-1">
+                        
+                        <h3 class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors duration-300">
+                            {{ $product->name }}
+                        </h3>
+                        
+                        <!-- Rating with original function -->
+                        <div class="flex items-center mb-2">
                             <div class="flex items-center text-yellow-400">
                                 @php
                                     // Pastikan average_rating ada dan merupakan angka
@@ -65,12 +137,27 @@
                                 @endfor
                             </div>
                             <span class="text-gray-500 text-xs ml-1">
-                                ({{ $product->rating_count ?? 0 }} ulasan)
+                                ({{ $product->rating_count ?? 0 }})
                             </span>
                         </div>
-                        {{-- Akhir Bagian Rating --}}
-                        <p class="text-pink-600 text-sm font-medium mt-1">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <p class="text-gray-900 text-sm mt-1">Stok: {{ $product->stock }}</p>
+                        
+                        <!-- Price and Stock -->
+                        <div class="flex items-center justify-between mb-3">
+                            <p class="text-base font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                            </p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ $product->stock }}
+                            </div>
+                        </div>
+                        
+                        <!-- Add to Cart Button -->
+                        <button class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 rounded-xl font-semibold text-sm hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                            + Keranjang
+                        </button>
                     </div>
                 </a>
             @endforeach
@@ -78,21 +165,114 @@
     </div>
 </section>
 
-<section class="py-12 mt-12">
+<!-- Quick Features -->
+<section class="py-8 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h3 class="text-2xl font-bold text-white text-center mb-8">Apa Kata Mereka?</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg">
-                <p class="italic text-gray-700">"Produk di Verse Beauty benar-benar berkualitas! Pengiriman cepat dan aman."</p>
-                <div class="mt-4 font-semibold text-[#738fbd]">— Amelia, Jakarta</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center">
+                <div class="bg-gradient-to-br from-pink-100 to-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">100%</h3>
+                <p class="text-sm text-gray-600">Produk Original</p>
             </div>
-            <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg">
-                <p class="italic text-gray-700">"Skincarenya cocok untuk kulit sensitifku. Bakal langganan terus!"</p>
-                <div class="mt-4 font-semibold text-[#738fbd]">— Rani, Bandung</div>
+            <div class="text-center">
+                <div class="bg-gradient-to-br from-purple-100 to-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">50K+</h3>
+                <p class="text-sm text-gray-600">Happy Customers</p>
             </div>
-            <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg">
-                <p class="italic text-gray-700">"Customer service sangat membantu, dan pilihan produknya lengkap."</p>
-                <div class="mt-4 font-semibold text-[#738fbd]">— Dinda, Surabaya</div>
+            <div class="text-center">
+                <div class="bg-gradient-to-br from-indigo-100 to-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">24/7</h3>
+                <p class="text-sm text-gray-600">Customer Support</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-gradient-to-br from-green-100 to-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Gratis</h3>
+                <p class="text-sm text-gray-600">Ongkos Kirim</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section - Compact -->
+<section class="py-8 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3 class="text-2xl font-bold text-center bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-6">
+            Apa Kata Mereka?
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/20">
+                <div class="flex items-center mb-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">A</span>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-semibold text-gray-900">Amelia</h4>
+                        <div class="flex">
+                            @for($i = 0; $i < 5; $i++)
+                                <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 italic">
+                    "Produk berkualitas! Pengiriman cepat dan aman."
+                </p>
+            </div>
+            
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/20">
+                <div class="flex items-center mb-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">R</span>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-semibold text-gray-900">Rani</h4>
+                        <div class="flex">
+                            @for($i = 0; $i < 5; $i++)
+                                <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 italic">
+                    "Cocok untuk kulit sensitifku. Bakal langganan terus!"
+                </p>
+            </div>
+            
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/20">
+                <div class="flex items-center mb-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">D</span>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-semibold text-gray-900">Dinda</h4>
+                        <div class="flex">
+                            @for($i = 0; $i < 5; $i++)
+                                <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 italic">
+                    "Customer service membantu, pilihan produk lengkap."
+                </p>
             </div>
         </div>
     </div>
