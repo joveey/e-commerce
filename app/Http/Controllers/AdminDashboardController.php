@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\CartItem;
+use App\Models\Order; // Pastikan model Order di-import
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -39,17 +40,33 @@ class AdminDashboardController extends Controller
 
     public function orders()
     {
-        $orders = \App\Models\Order::with(['items.product', 'user'])->latest()->get();
-        return view('admin.orders', compact('orders'));
+        // --- QUERY BARU UNTUK MENGATASI MASALAH ---
+
+        // 1. Ambil semua ID user yang memiliki pesanan aktif
+        $activeOrderUserIds = Order::where('status', '!=', 'completed')
+                                    ->pluck('user_id')
+                                    ->unique();
+
+        // 2. Ambil data user berdasarkan ID tersebut, lalu paginasi
+        $usersWithActiveOrders = User::whereIn('id', $activeOrderUserIds)
+            ->with(['orders' => function ($query) {
+                // Eager load HANYA pesanan yang aktif untuk setiap user
+                $query->where('status', '!=', 'completed')
+                    ->with('items.product')
+                    ->latest();
+            }])
+            ->paginate(20);
+
+        return view('admin.orders.index', compact('usersWithActiveOrders'));
     }
 
     public function users()
     {
-        $users = User::latest()->paginate(10); // paginate agar tidak berat
+        $users = User::latest()->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
-    public function updateOrderStatus(Request $request, \App\Models\Order $order)
+    public function updateOrderStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
             'status' => 'required|in:pending,processing,shipped,completed'

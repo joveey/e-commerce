@@ -11,6 +11,7 @@ class Order extends Model
     const STATUS_PROCESSING = 'processing';
     const STATUS_SHIPPED = 'shipped';
     const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled'; // <-- 1. TAMBAHKAN INI
 
     public static function getStatusList()
     {
@@ -18,7 +19,8 @@ class Order extends Model
             self::STATUS_PENDING => 'Pesanan Diterima',
             self::STATUS_PROCESSING => 'Sedang Diproses',
             self::STATUS_SHIPPED => 'Pesanan Dikirim',
-            self::STATUS_COMPLETED => 'Pesanan Selesai'
+            self::STATUS_COMPLETED => 'Pesanan Selesai',
+            self::STATUS_CANCELLED => 'Pesanan Dibatalkan' // <-- 2. TAMBAHKAN INI
         ];
     }
 

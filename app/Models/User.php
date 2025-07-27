@@ -28,6 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'is_admin', // ditambahkan agar bisa mass-assign admin
+        'phone_number',
+        'gender',
+        'address', 
     ];
 
     /**

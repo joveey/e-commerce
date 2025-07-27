@@ -17,7 +17,12 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            
+            // Aturan untuk field baru
+            'phone_number' => ['nullable', 'numeric', 'digits_between:10,15', Rule::unique(User::class)->ignore($this->user()->id)],
+            'gender' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])],
+            'address' => ['nullable', 'string'],
         ];
     }
 }
