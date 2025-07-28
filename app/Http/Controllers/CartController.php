@@ -14,6 +14,7 @@ use App\Mail\InvoiceMail;
 
 class CartController extends Controller
 {
+    // ... (method add, update, remove, dan index Anda tetap sama) ...
     public function add(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -87,7 +88,7 @@ class CartController extends Controller
         return view('cart.index', compact('cart', 'items'));
     }
 
-    public function checkout()
+    public function showCheckout()
     {
         /** @var \App\Models\User $user */
         $user = auth()->user();
@@ -95,9 +96,32 @@ class CartController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login untuk checkout.');
         }
 
-        // ## PERUBAHAN DI SINI: Validasi Alamat ##
         if (empty($user->address)) {
             return redirect()->route('profile.edit')->with('error', 'Alamat pengiriman Anda masih kosong. Silakan lengkapi profil Anda terlebih dahulu.');
+        }
+
+        $cart = $user->cart()->with('items.product')->first();
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
+        }
+
+        $items = $cart->items;
+        $subtotal = $items->sum(function($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        $shippingCost = 15000; 
+        $total = $subtotal + $shippingCost;
+
+        return view('checkout.index', compact('user', 'items', 'subtotal', 'shippingCost', 'total'));
+    }
+
+    public function processCheckout(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Sesi Anda berakhir, silakan login kembali.');
         }
 
         $cart = $user->cart()->with('items.product')->first();
@@ -105,14 +129,18 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
         }
 
-        $items = [];
         $totalPrice = 0;
+        $mailItems = []; // 1. Buat array kosong untuk data email
 
-        $order = $user->orders()->create(['total_price' => 0]);
+        $order = $user->orders()->create([
+            'total_price' => 0,
+            'pesan' => $request->input('pesan')
+        ]);
 
         foreach ($cart->items as $item) {
             $product = $item->product;
             if ($product->stock < $item->quantity) {
+                $order->delete(); 
                 return redirect()->route('cart.index')->with('error', "Stok tidak cukup untuk {$product->name}");
             }
             $product->stock -= $item->quantity;
@@ -123,7 +151,9 @@ class CartController extends Controller
                 'price' => $product->price,
             ]);
             $totalPrice += $product->price * $item->quantity;
-            $items[$product->id] = [
+
+            // 2. Isi array dengan data yang akan dikirim ke email
+            $mailItems[$product->id] = [
                 'name' => $product->name,
                 'quantity' => $item->quantity,
                 'price' => $product->price,
@@ -131,12 +161,19 @@ class CartController extends Controller
             ];
         }
 
-        $order->update(['total_price' => $totalPrice]);
-        Mail::to($user->email)->send(new InvoiceMail($items, $user));
+        $shippingCost = 15000;
+        $finalTotal = $totalPrice + $shippingCost;
+        $order->update(['total_price' => $finalTotal]);
+
+        // 3. Kirim email dengan 2 argumen: array item dan objek user
+        Mail::to($user->email)->send(new InvoiceMail($mailItems, $user));
+
         $cart->items()->delete();
-        return redirect('/')->with('success', 'Checkout berhasil! Invoice telah dikirim ke email.');
+
+        return redirect('/')->with('success', 'Checkout berhasil! Invoice telah dikirim ke email Anda.');
     }
 
+    // ... (method checkoutSingle dan updateAjax Anda tetap sama) ...
     public function checkoutSingle($id)
     {
         $product = Product::findOrFail($id);
@@ -145,26 +182,20 @@ class CartController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'Silakan login untuk checkout.');
         }
-
-        // ## PERUBAHAN DI SINI: Validasi Alamat ##
         if (empty($user->address)) {
             return redirect()->route('profile.edit')->with('error', 'Alamat pengiriman Anda masih kosong. Silakan lengkapi profil Anda terlebih dahulu.');
         }
-
         if ($product->stock < 1) {
             return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
         }
-
         $product->stock -= 1;
         $product->save();
-
         $order = $user->orders()->create(['total_price' => $product->price]);
         $order->items()->create([
             'product_id' => $product->id,
             'quantity' => 1,
             'price' => $product->price,
         ]);
-
         $item = [
             $product->id => [
                 'name' => $product->name,
@@ -173,7 +204,6 @@ class CartController extends Controller
                 'image' => $product->image,
             ]
         ];
-
         Mail::to($user->email)->send(new InvoiceMail($item, $user));
         return redirect('/')->with('success', 'Checkout berhasil! Invoice dikirim ke email.');
     }

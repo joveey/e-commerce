@@ -492,7 +492,6 @@
                                  x-transition:leave-end="opacity-0 scale-95"
                                  class="user-dropdown-menu">
 
-                                {{-- ## PERUBAHAN DI SINI: Tombol Admin Dashboard ## --}}
                                 @if(Auth::user()->is_admin)
                                     <a href="{{ route('admin.dashboard') }}" class="block">
                                         <i class="fas fa-tachometer-alt mr-3"></i> {{ __('Admin Dashboard') }}
@@ -514,9 +513,14 @@
                             </div>
                         </div>
                     @else
+                        {{-- ## PERUBAHAN DI SINI: Tombol Login dan Register ## --}}
                         <a href="{{ route('login') }}" class="user-dropdown-toggle">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>Login</span>
+                        </a>
+                        <a href="{{ route('register') }}" class="user-dropdown-toggle" style="background: linear-gradient(135deg, #ec4899, #a855f7); color: white; border-color: transparent;">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Register</span>
                         </a>
                     @endauth
                 </div>

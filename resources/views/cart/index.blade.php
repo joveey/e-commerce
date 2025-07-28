@@ -90,13 +90,12 @@
                         </button>
                     @else
                         {{-- Tombol Checkout Aktif --}}
-                        <form method="POST" action="{{ route('cart.checkout') }}">
-                            @csrf
-                            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105">
-                                <span>Checkout</span>
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                            </button>
-                        </form>
+                        <a href="{{ route('checkout.show') }}" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 text-center">
+                            <span>Checkout</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
                     @endif
                 </div>
             </div>

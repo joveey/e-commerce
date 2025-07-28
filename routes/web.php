@@ -47,7 +47,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/checkout', [CartController::class, 'showCheckout'])->name('checkout.show'); 
+    Route::post('/checkout', [CartController::class, 'processCheckout'])->name('checkout.process');
     Route::post('/checkout/product/{id}', [CartController::class, 'checkoutSingle'])->name('cart.checkout.single');
     Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 
