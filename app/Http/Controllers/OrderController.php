@@ -2,24 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; // 1. Import Request
 use App\Models\Order;
-use App\Models\User; // <--- Make sure you import the User model!
+use App\Models\User;
 
 class OrderController extends Controller
 {
-    public function history()
+    // 2. Tambahkan Request $request sebagai parameter
+    public function history(Request $request) 
     {
-        /** @var \App\Models\User $user */ // <--- Add this type hint
+        /** @var \App\Models\User $user */
         $user = auth()->user();
 
         if (!$user) {
-            // Optional: Handle case where user is not logged in, similar to CartController
             return redirect()->route('login')->with('error', 'Silakan login untuk melihat riwayat pesanan.');
         }
 
-        // Intelephense will now understand $user is an App\Models\User and has an orders() method
-        $orders = $user->orders()->with('items.product')->latest()->get();
+        // 3. Bangun query dasar
+        $query = $user->orders()->with('items.product')->latest();
+
+        // 4. Ambil status dari URL dan terapkan filter jika ada
+        $statusFilter = $request->query('status');
+        if ($statusFilter && $statusFilter !== 'all') {
+            $query->where('status', $statusFilter);
+        }
+
+        // 5. Gunakan paginate untuk performa yang lebih baik
+        $orders = $query->paginate(5); // Menampilkan 5 pesanan per halaman
 
         return view('orders.history', compact('orders'));
     }
