@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductRating; // 1. Import model ProductRating
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; // 2. Import Str helper
 
 class ProductController extends Controller
 {
@@ -24,7 +26,16 @@ class ProductController extends Controller
     {
         $products = Product::all();
         $categories = \App\Models\Category::all();
-        return view('landing', compact('products', 'categories'));
+
+        // 3. Tambahkan query untuk mengambil ulasan terbaik
+        $topReviews = ProductRating::where('rating', 5)
+            ->with(['user', 'product']) // Mengambil info user & produk terkait
+            ->latest()                  // Mengurutkan dari yang terbaru
+            ->take(3)                   // Membatasi hanya 3 ulasan
+            ->get();
+
+        // 4. Kirim variabel $topReviews ke view
+        return view('landing', compact('products', 'categories', 'topReviews'));
     }
 
     public function byCategory($id)

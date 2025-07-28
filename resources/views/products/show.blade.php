@@ -134,7 +134,6 @@
                         <div class="thumbnail active w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center" onclick="changeImage(this, '{{ asset('storage/' . $product->image) }}')">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </div>
-                        <!-- Default additional thumbnails using same image -->
                         <div class="thumbnail w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center" onclick="changeImage(this, '{{ asset('storage/' . $product->image) }}')">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </div>
@@ -152,9 +151,7 @@
                     <div>
                         <!-- Hot Badge -->
                         <div class="inline-flex items-center bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                            </svg>
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                             PRODUK TERLARIS
                         </div>
 
@@ -184,9 +181,7 @@
                         <div class="block mb-4">
                             @if($product->category)
                                 <div class="inline-block bg-gradient-to-r from-pink-100 to-purple-100 text-pink-600 px-4 py-2 rounded-full text-sm font-bold border border-pink-200">
-                                    <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
-                                    </svg>
+                                    <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
                                     {{ $product->category->name }}
                                 </div>
                             @endif
@@ -196,16 +191,12 @@
                         <div class="block mb-6">
                             @if($product->stock > 0)
                                 <div class="inline-flex items-center bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-4 py-3 rounded-full text-sm font-bold border border-green-200">
-                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                    </svg>
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                                     Stok tersedia: {{ $product->stock }} unit
                                 </div>
                             @else
                                 <div class="inline-flex items-center bg-gradient-to-r from-red-100 to-pink-100 text-red-700 px-4 py-3 rounded-full text-sm font-bold border border-red-200">
-                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                    </svg>
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
                                     Stok habis
                                 </div>
                             @endif
@@ -220,38 +211,10 @@
                         <div id="moreInfoContent" class="hidden info-toggle p-6 rounded-2xl mb-6">
                             <h4 class="font-bold text-gray-900 mb-4">Keunggulan Produk:</h4>
                             <ul class="space-y-3 text-gray-700">
-                                <li class="flex items-center">
-                                    <div class="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Produk berkualitas tinggi dan terjamin
-                                </li>
-                                <li class="flex items-center">
-                                    <div class="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Pengiriman cepat dan aman
-                                </li>
-                                <li class="flex items-center">
-                                    <div class="w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Garansi resmi dan layanan purna jual
-                                </li>
-                                <li class="flex items-center">
-                                    <div class="w-6 h-6 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Customer service responsif 24/7
-                                </li>
+                                <li class="flex items-center"><div class="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-3"><svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div>Produk berkualitas tinggi dan terjamin</li>
+                                <li class="flex items-center"><div class="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-3"><svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div>Pengiriman cepat dan aman</li>
+                                <li class="flex items-center"><div class="w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mr-3"><svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div>Garansi resmi dan layanan purna jual</li>
+                                <li class="flex items-center"><div class="w-6 h-6 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-3"><svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div>Customer service responsif 24/7</li>
                             </ul>
                         </div>
                     </div>
@@ -271,9 +234,7 @@
                                 @if($product->stock > 0)
                                     <button type="submit" class="gradient-button text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 flex items-center space-x-3">
                                         <span>Add to Cart</span>
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
-                                        </svg>
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
                                     </button>
                                 @else
                                     <button type="button" class="bg-gray-400 text-white px-8 py-4 rounded-2xl font-bold cursor-not-allowed opacity-50" disabled>
@@ -283,17 +244,40 @@
                             </div>
                         </form>
                         
-                        <!-- Checkout Button -->
+                        <!-- ## PERUBAHAN DI SINI: Checkout Button with Address Check ## -->
                         @if($product->stock > 0)
-                            <form method="POST" action="{{ route('cart.checkout.single', $product->id) }}">
-                                @csrf
-                                <button type="submit" class="w-full gradient-button-secondary text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center space-x-3">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <span>Checkout Sekarang</span>
-                                </button>
-                            </form>
+                            @auth
+                                @if (empty(Auth::user()->address))
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                                        <div class="flex">
+                                            <div class="py-1"><svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 5v6h2V5H9zm0 8h2v2H9v-2z"/></svg></div>
+                                            <div>
+                                                <p class="font-bold">Alamat Kosong</p>
+                                                <p class="text-sm">Lengkapi alamat pengiriman Anda di profil untuk checkout.</p>
+                                                <a href="{{ route('profile.edit') }}" class="text-sm font-semibold text-yellow-700 hover:underline mt-2 inline-block">Lengkapi Profil Sekarang &rarr;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="w-full bg-gray-400 text-white px-8 py-4 rounded-2xl font-bold cursor-not-allowed opacity-50 flex items-center justify-center space-x-3" disabled>
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                        <span>Checkout Sekarang</span>
+                                    </button>
+                                @else
+                                    <form method="POST" action="{{ route('cart.checkout.single', $product->id) }}">
+                                        @csrf
+                                        <button type="submit" class="w-full gradient-button-secondary text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center space-x-3">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                            <span>Checkout Sekarang</span>
+                                        </button>
+                                    </form>
+                                @endif
+                            @else
+                                {{-- Jika user belum login, arahkan ke halaman login --}}
+                                <a href="{{ route('login') }}" class="w-full gradient-button-secondary text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center space-x-3">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                    <span>Login untuk Checkout</span>
+                                </a>
+                            @endauth
                         @endif
                     </div>
                 </div>
@@ -348,9 +332,7 @@
                     @empty
                         <div class="text-center py-16">
                             <div class="w-24 h-24 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-12 h-12 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                                </svg>
+                                <svg class="w-12 h-12 text-pink-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
                             </div>
                             <p class="text-gray-500 text-lg">Belum ada ulasan untuk produk ini.</p>
                             <p class="text-gray-400 text-sm mt-2">Jadilah yang pertama memberikan ulasan!</p>
@@ -365,13 +347,10 @@
 <script>
 // Image gallery functionality
 function changeImage(thumbnail, imageSrc) {
-    // Remove active class from all thumbnails
     document.querySelectorAll('.thumbnail').forEach(thumb => {
         thumb.classList.remove('active');
     });
-    // Add active class to clicked thumbnail
     thumbnail.classList.add('active');
-    // Change main image
     document.getElementById('mainImage').src = imageSrc;
 }
 
@@ -415,7 +394,6 @@ function toggleMoreInfo() {
 
 // Add some smooth animations
 document.addEventListener('DOMContentLoaded', function() {
-    // Animate elements on page load
     const elements = document.querySelectorAll('.gradient-card');
     elements.forEach((el, index) => {
         el.style.opacity = '0';

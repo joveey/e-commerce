@@ -54,7 +54,7 @@
                 <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-8">
                     <h3 class="text-xl font-semibold text-gray-900 mb-6">Ringkasan Pesanan</h3>
 
-                            <div class="space-y-3 mb-6">
+                    <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-gray-600">
                             <span>Total Produk</span>
                             <span id="total-items">{{ $totalItems }} item</span>
@@ -69,15 +69,35 @@
                                 <span id="total-price">Rp{{ number_format($total, 0, ',', '.') }}</span>
                             </div>
                         </div>
-                    </div>                    <form method="POST" action="{{ route('cart.checkout') }}">
-                        @csrf
-                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2">
+                    </div>
+
+                    {{-- ## PERUBAHAN DI SINI: Pesan Peringatan Alamat ## --}}
+                    @if (empty(Auth::user()->address))
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r-lg">
+                            <div class="flex">
+                                <div class="py-1"><svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 5v6h2V5H9zm0 8h2v2H9v-2z"/></svg></div>
+                                <div>
+                                    <p class="font-bold">Alamat Kosong</p>
+                                    <p class="text-sm">Lengkapi alamat pengiriman Anda di halaman profil untuk melanjutkan checkout.</p>
+                                    <a href="{{ route('profile.edit') }}" class="text-sm font-semibold text-yellow-700 hover:underline mt-2 inline-block">Lengkapi Profil Sekarang &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- Tombol Checkout Dinonaktifkan --}}
+                        <button type="button" class="w-full bg-gray-400 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 cursor-not-allowed" disabled>
                             <span>Checkout</span>
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                         </button>
-                    </form>
+                    @else
+                        {{-- Tombol Checkout Aktif --}}
+                        <form method="POST" action="{{ route('cart.checkout') }}">
+                            @csrf
+                            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105">
+                                <span>Checkout</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -86,30 +106,24 @@
     @endif
 </div>
 <script>
+// ... (fungsi JavaScript Anda tetap sama) ...
 function updateOrderSummary() {
     let totalItems = 0;
     let totalPrice = 0;
-    
-    // Get all quantity spans and calculate totals
     document.querySelectorAll('[id^="quantity-"]').forEach(qtyElement => {
         const itemId = qtyElement.id.split('-')[1];
         const qty = parseInt(qtyElement.innerText);
         const price = parseFloat(document.getElementById('price-' + itemId).dataset.price);
-        
         totalItems += qty;
         totalPrice += qty * price;
     });
-
-    // Update order summary
     document.getElementById('total-items').innerText = totalItems + ' item';
     document.getElementById('subtotal-price').innerText = 'Rp' + formatNumber(totalPrice);
     document.getElementById('total-price').innerText = 'Rp' + formatNumber(totalPrice);
 }
-
 function formatNumber(number) {
     return new Intl.NumberFormat('id-ID').format(number);
 }
-
 function increaseCartQuantity(itemId, maxStock, price) {
     let qtySpan = document.getElementById('quantity-' + itemId);
     let qty = parseInt(qtySpan.innerText);
@@ -117,7 +131,6 @@ function increaseCartQuantity(itemId, maxStock, price) {
         updateCartAjax(itemId, qty + 1, price);
     }
 }
-
 function decreaseCartQuantity(itemId, maxStock, price) {
     let qtySpan = document.getElementById('quantity-' + itemId);
     let qty = parseInt(qtySpan.innerText);
@@ -125,7 +138,6 @@ function decreaseCartQuantity(itemId, maxStock, price) {
         updateCartAjax(itemId, qty - 1, price);
     }
 }
-
 function updateCartAjax(itemId, newQty, price) {
     fetch("{{ url('/cart/update-ajax') }}/" + itemId, {
         method: "PATCH",
@@ -138,16 +150,12 @@ function updateCartAjax(itemId, newQty, price) {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            // Update item quantity and subtotal
             document.getElementById('quantity-' + itemId).innerText = data.quantity;
             document.getElementById('qty-' + itemId).innerText = data.quantity;
             document.getElementById('subtotal-' + itemId).innerText = data.subtotal_formatted;
-            
-            // Update order summary
             updateOrderSummary();
         }
     });
 }
 </script>
 @endsection
-    

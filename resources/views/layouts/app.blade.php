@@ -491,6 +491,14 @@
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
                                  class="user-dropdown-menu">
+
+                                {{-- ## PERUBAHAN DI SINI: Tombol Admin Dashboard ## --}}
+                                @if(Auth::user()->is_admin)
+                                    <a href="{{ route('admin.dashboard') }}" class="block">
+                                        <i class="fas fa-tachometer-alt mr-3"></i> {{ __('Admin Dashboard') }}
+                                    </a>
+                                @endif
+
                                 <a href="{{ route('profile.edit') }}" class="block">
                                     <i class="fas fa-user-circle mr-3"></i> {{ __('Akun Saya') }}
                                 </a>
