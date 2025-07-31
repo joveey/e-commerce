@@ -1,45 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Section with Discount Banner -->
-<section class="relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-    <div class="absolute inset-0 bg-gradient-to-r from-pink-400/10 to-purple-600/10"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-6 md:p-8">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
-                <div class="flex-1 text-center lg:text-left">
-                    <div class="inline-flex items-center bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        Penawaran Terbatas
-                    </div>
-                    <h1 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 leading-tight">
-                        {{ $discountTitle ?? 'Ekstra Diskon Spesial!' }}
-                    </h1>
-                    <p class="text-lg text-gray-600 mb-6">
-                        {{ $discountDesc ?? 'Dapatkan penawaran menarik untuk produk pilihan yang akan membuat kamu tampil lebih percaya diri.' }}
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                        <button class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            Belanja Sekarang
-                        </button>
-                        <button class="border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-pink-500 hover:text-pink-500 transition-all duration-300">
-                            Lihat Koleksi
-                        </button>
-                    </div>
-                </div>
-                @if(isset($discountImage))
-                <div class="flex-1 max-w-sm">
-                    <div class="relative">
-                        <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 to-purple-600 rounded-3xl blur-lg opacity-30"></div>
-                        <img src="{{ asset('storage/' . $discountImage) }}" 
-                             alt="Diskon" 
-                             class="relative rounded-3xl shadow-2xl w-full h-auto object-cover">
-                    </div>
-                </div>
-                @endif
-            </div>
+<!-- ## BAGIAN YANG DIUBAH: Hero Section diganti dengan Banner ## -->
+<section class="py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Container untuk banner dengan sudut membulat dan bayangan --}}
+        <div class="rounded-2xl shadow-lg overflow-hidden bg-pink-50">
+            {{-- 
+                DEBUGGING GAMBAR TIDAK MUNCUL - IKUTI LANGKAH INI:
+                1. PASTIKAN NAMA FILE: Buka folder `public/images/` dan periksa nama file gambar Anda. Pastikan tidak ada salah ketik (typo) dan perhatikan huruf besar/kecil.
+                2. GANTI NAMA DI BAWAH: Ganti 'nama-banner-anda.jpg' di baris `src` di bawah ini dengan nama file Anda yang sebenarnya.
+                3. RESTART SERVER: Jika masih tidak muncul, hentikan server (`Ctrl + C` di terminal) dan jalankan lagi dengan `php artisan serve`.
+            --}}
+            {{-- PERUBAHAN DI SINI: Mengganti spasi dengan tanda hubung --}}
+            <img src="{{ asset('images/banner-verse.png') }}" 
+                 alt="Promotional Banner" 
+                 class="w-full h-auto object-cover"
+                 onerror="this.onerror=null; this.src='https://placehold.co/2000x600/fce7f3/db2777?text=Gambar+Tidak+Ditemukan';">
         </div>
     </div>
 </section>
@@ -180,7 +157,7 @@
     </div>
 </section>
 
-<!-- ## BAGIAN YANG DIUBAH ## -->
+<!-- Testimonials Section -->
 <section class="py-8 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-2xl font-bold text-center bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-6">
