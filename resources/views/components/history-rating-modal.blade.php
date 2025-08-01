@@ -1,11 +1,15 @@
 <!-- Rating Modal for History -->
 <div x-show="showRatingModal" 
      x-cloak
-     class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+     {{-- ## PERUBAHAN DI SINI: Mengubah 'fixed' menjadi 'absolute' ## --}}
+     class="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
      x-data="{ 
         rating: 0,
         review: '',
+        isLoading: false,
         async submitRating() {
+            if (this.rating === 0) return;
+            this.isLoading = true;
             try {
                 const response = await fetch('{{ route('products.rate') }}', {
                     method: 'POST',
@@ -26,13 +30,20 @@
                 if (data.success) {
                     // Refresh the page to show the new rating
                     window.location.reload();
+                } else {
+                    // Handle potential errors from the server, e.g., already rated
+                    alert(data.message || 'Gagal mengirim ulasan.');
                 }
             } catch (error) {
                 console.error('Error submitting rating:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            } finally {
+                this.isLoading = false;
+                showRatingModal = false;
             }
         }
      }">
-    <div class="bg-white rounded-lg max-w-md w-full p-6 m-4" @click.away="showRatingModal = false">
+    <div class="bg-white rounded-lg max-w-md w-full p-6 m-4 shadow-xl" @click.away="showRatingModal = false">
         <div class="text-center mb-6">
             <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fas fa-star text-pink-500 text-2xl"></i>
@@ -71,9 +82,12 @@
                     Batal
                 </button>
                 <button type="submit"
-                    :disabled="rating === 0"
-                    class="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                    Kirim Rating
+                    :disabled="rating === 0 || isLoading"
+                    class="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                    <span x-show="!isLoading">Kirim Rating</span>
+                    <span x-show="isLoading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...
+                    </span>
                 </button>
             </div>
         </form>
