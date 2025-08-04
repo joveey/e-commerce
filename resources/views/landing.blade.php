@@ -39,6 +39,7 @@
         >
             <!-- Slides Container -->
             <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${(activeSlide - 1) * 100}%)`">
+<<<<<<< HEAD
                 {{-- ## PERUBAHAN DI SINI: Menggunakan nama file gambar Anda ## --}}
                 <!-- Slide 1 -->
                 <div class="w-full flex-shrink-0">
@@ -59,6 +60,27 @@
                 <!-- Slide 5 -->
                 <div class="w-full flex-shrink-0">
                     <img src="{{ asset('images/banner_comingsoon.png') }}" alt="Promotional Banner 5" class="w-full h-auto object-cover">
+=======
+                <!-- Slide 1 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner-1.png') }}" alt="Promotional Banner 1" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 2 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner-2.png') }}" alt="Promotional Banner 2" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 3 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner-3.png') }}" alt="Promotional Banner 3" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 4 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner-4.png') }}" alt="Promotional Banner 4" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 5 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner-5.png') }}" alt="Promotional Banner 5" class="w-full h-auto object-cover">
+>>>>>>> 5b0fa227ec004405b1a814e8374b649d579a4274
                 </div>
             </div>
 
