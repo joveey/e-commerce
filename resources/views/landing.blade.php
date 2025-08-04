@@ -1,22 +1,81 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- ## BAGIAN YANG DIUBAH: Hero Section diganti dengan Banner ## -->
+<!-- ## BAGIAN YANG DIUBAH: Banner Statis menjadi Slideshow Dinamis ## -->
 <section class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Container untuk banner dengan sudut membulat dan bayangan --}}
-        <div class="rounded-2xl shadow-lg overflow-hidden bg-pink-50">
-            {{-- 
-                DEBUGGING GAMBAR TIDAK MUNCUL - IKUTI LANGKAH INI:
-                1. PASTIKAN NAMA FILE: Buka folder `public/images/` dan periksa nama file gambar Anda. Pastikan tidak ada salah ketik (typo) dan perhatikan huruf besar/kecil.
-                2. GANTI NAMA DI BAWAH: Ganti 'nama-banner-anda.jpg' di baris `src` di bawah ini dengan nama file Anda yang sebenarnya.
-                3. RESTART SERVER: Jika masih tidak muncul, hentikan server (`Ctrl + C` di terminal) dan jalankan lagi dengan `php artisan serve`.
-            --}}
-            {{-- PERUBAHAN DI SINI: Mengganti spasi dengan tanda hubung --}}
-            <img src="{{ asset('images/banner-verse.png') }}" 
-                 alt="Promotional Banner" 
-                 class="w-full h-auto object-cover"
-                 onerror="this.onerror=null; this.src='https://placehold.co/2000x600/fce7f3/db2777?text=Gambar+Tidak+Ditemukan';">
+        {{-- Container untuk banner slideshow --}}
+        <div 
+            x-data="{
+                activeSlide: 1,
+                totalSlides: 5,
+                autoplay: null,
+                startAutoplay() {
+                    this.autoplay = setInterval(() => {
+                        this.activeSlide = this.activeSlide === this.totalSlides ? 1 : this.activeSlide + 1;
+                    }, 2000); // Ganti gambar setiap 2 detik
+                },
+                stopAutoplay() {
+                    clearInterval(this.autoplay);
+                },
+                next() {
+                    this.activeSlide = this.activeSlide === this.totalSlides ? 1 : this.activeSlide + 1;
+                    this.stopAutoplay();
+                    this.startAutoplay();
+                },
+                prev() {
+                    this.activeSlide = this.activeSlide === 1 ? this.totalSlides : this.activeSlide - 1;
+                    this.stopAutoplay();
+                    this.startAutoplay();
+                },
+                goToSlide(slide) {
+                    this.activeSlide = slide;
+                    this.stopAutoplay();
+                    this.startAutoplay();
+                }
+            }"
+            x-init="startAutoplay()"
+            class="relative rounded-2xl shadow-lg overflow-hidden bg-pink-50"
+        >
+            <!-- Slides Container -->
+            <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${(activeSlide - 1) * 100}%)`">
+                {{-- ## PERUBAHAN DI SINI: Menggunakan nama file gambar Anda ## --}}
+                <!-- Slide 1 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner_welcome.png') }}" alt="Promotional Banner 1" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 2 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner_profil.png') }}" alt="Promotional Banner 2" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 3 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner_diskon.png') }}" alt="Promotional Banner 3" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 4 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner_akhirtahun.png') }}" alt="Promotional Banner 4" class="w-full h-auto object-cover">
+                </div>
+                <!-- Slide 5 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="{{ asset('images/banner_comingsoon.png') }}" alt="Promotional Banner 5" class="w-full h-auto object-cover">
+                </div>
+            </div>
+
+            <!-- Navigation Arrows -->
+            <button @click="prev()" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/50 hover:bg-white rounded-full w-10 h-10 flex items-center justify-center text-gray-700 transition">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button @click="next()" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/50 hover:bg-white rounded-full w-10 h-10 flex items-center justify-center text-gray-700 transition">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Navigation Dots -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <template x-for="i in totalSlides" :key="i">
+                    <button @click="goToSlide(i)" :class="{'bg-pink-500': activeSlide === i, 'bg-white/50': activeSlide !== i}" class="w-3 h-3 rounded-full transition"></button>
+                </template>
+            </div>
         </div>
     </div>
 </section>
