@@ -452,7 +452,6 @@
                     </div>
                 </div>
                 <div class="social-links">
-                    {{-- ## PERUBAHAN DI SINI: Link Sosial Media ## --}}
                     <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter"><i class="fab fa-twitter"></i></a>
@@ -534,8 +533,8 @@
             </header>
         @endif
 
-        <!-- Flash Messages -->
-        <div class="fixed top-4 right-4 z-50 w-80">
+        <!-- ## PERUBAHAN DI SINI: Menaikkan z-index ## -->
+        <div class="fixed top-4 right-4 z-[9999] w-80">
             @if (session('success'))
                 <div class="flash-message flash-success"
                      x-data="{ show: true }"
@@ -588,7 +587,6 @@
                         <h3 class="text-xl font-bold mb-4" style="background: linear-gradient(135deg, #ec4899, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Verse Beauty</h3>
                         <p class="text-gray-600 mb-6 leading-relaxed">Pusat kosmetik dan kecantikan terlengkap dengan berbagai brand ternama untuk kecantikan alami Anda.</p>
                         <div class="flex space-x-4">
-                            {{-- ## PERUBAHAN DI SINI: Link Sosial Media Footer ## --}}
                             <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center text-pink-600 hover:bg-gradient-to-br hover:from-pink-500 hover:to-purple-600 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
                                 <i class="fab fa-instagram"></i>
                             </a>
@@ -621,7 +619,6 @@
                     <div>
                         <h4 class="text-gray-900 font-semibold mb-4">Download Aplikasi</h4>
                         <div class="space-y-3">
-                            {{-- ## PERUBAHAN DI SINI: Link App Store & Play Store ## --}}
                             <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer" class="block transform hover:-translate-y-1 transition-transform duration-300">
                                 <div class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded-lg text-center font-semibold">
                                     <i class="fab fa-apple mr-2"></i>App Store

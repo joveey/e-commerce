@@ -52,6 +52,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/product/{id}', [CartController::class, 'checkoutSingle'])->name('cart.checkout.single');
     Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 
+    // ## RUTE BARU UNTUK DOWNLOAD INVOICE ##
+    Route::get('/orders/{order}/invoice/download', [OrderController::class, 'downloadInvoice'])->name('orders.invoice.download');
+
     // Product Ratings
     Route::post('/products/rate', [ProductRatingController::class, 'store'])->name('products.rate');
     Route::post('/products/clear-rating-session', [ProductRatingController::class, 'clearRatingSession'])->name('products.clearRatingSession');
