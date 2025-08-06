@@ -15,9 +15,12 @@
         <div class="relative z-10 w-full max-w-6xl mx-auto">
             <!-- Brand Header -->
             <div class="text-center mb-10">
-                <h1 class="text-5xl font-bold font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-                    Verse Beauty
-                </h1>
+                {{-- ## PERUBAHAN DI SINI: Menambahkan tag <a> ## --}}
+                <a href="{{ route('landing') }}">
+                    <h1 class="text-5xl font-bold font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                        Verse Beauty
+                    </h1>
+                </a>
                 <p class="text-gray-600 font-medium text-lg">Kecantikan Alami untuk Setiap Wanita</p>
             </div>
 

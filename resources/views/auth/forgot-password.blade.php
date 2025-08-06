@@ -52,17 +52,32 @@
                     </div>
 
                     <div class="mt-6">
-                        <x-primary-button class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-pink-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                        {{-- ## PERUBAHAN DI SINI: Menambahkan kelas flex dan justify-center ## --}}
+                        <x-primary-button class="w-full flex justify-center bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-pink-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
                             {{ __('Kirim Tautan Reset Password') }}
                         </x-primary-button>
                     </div>
                 </form>
 
-                <div class="mt-6 text-center text-sm text-gray-600">
-                    <a class="font-medium text-pink-600 hover:text-pink-800 hover:underline" href="{{ route('login') }}">
-                        &larr; Kembali ke Login
+                <!-- Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-gray-500 font-medium">Ingat password Anda?</span>
+                    </div>
+                </div>
+
+                <!-- Login Link as a Button -->
+                <div class="text-center">
+                    <a href="{{ route('login') }}" 
+                       class="inline-flex items-center justify-center w-full bg-white border-2 border-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 hover:border-pink-300 transition-all duration-300 transform hover:-translate-y-0.5">
+                        <i class="fas fa-arrow-left mr-2 text-pink-500"></i>
+                        Kembali ke Halaman Login
                     </a>
                 </div>
+
             </div>
         </div>
     </div>

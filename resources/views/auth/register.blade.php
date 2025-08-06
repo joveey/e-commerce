@@ -4,8 +4,10 @@
         <!-- Decorative Background Elements -->
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute top-20 left-10 w-32 h-32 bg-pink-100 rounded-full opacity-40 animate-pulse-slow"></div>
+            <div class="absolute top-1/2 left-20 w-20 h-20 bg-purple-100 rounded-full opacity-30 animate-pulse-slow" style="animation-delay: 1s;"></div>
             <div class="absolute bottom-32 left-16 w-24 h-24 bg-indigo-100 rounded-full opacity-35 animate-pulse-slow" style="animation-delay: 2s;"></div>
             <div class="absolute top-32 right-12 w-28 h-28 bg-purple-100 rounded-full opacity-45 animate-pulse-slow" style="animation-delay: 0.5s;"></div>
+            <div class="absolute top-2/3 right-20 w-16 h-16 bg-pink-100 rounded-full opacity-40 animate-pulse-slow" style="animation-delay: 1.5s;"></div>
             <div class="absolute bottom-20 right-14 w-36 h-36 bg-indigo-100 rounded-full opacity-30 animate-pulse-slow" style="animation-delay: 2.5s;"></div>
         </div>
 
@@ -113,7 +115,7 @@
 
                             <!-- Actions -->
                             <div class="pt-2">
-                                <x-primary-button class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-pink-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                                <x-primary-button class="w-full flex justify-center bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-pink-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
                                     {{ __('Register') }}
                                 </x-primary-button>
                             </div>
@@ -125,6 +127,19 @@
                                 </a>
                             </div>
                         </form>
+
+                        <!-- Divider -->
+                        <div class="relative my-8">
+                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                            <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-500 font-medium">atau</span></div>
+                        </div>
+
+                        <!-- Landing Page Link -->
+                        <div class="text-center">
+                            <a href="{{ route('landing') }}" class="inline-flex items-center justify-center w-full bg-white border-2 border-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 hover:border-pink-300 transition-all duration-300 transform hover:-translate-y-0.5">
+                                <i class="fas fa-home mr-2 text-pink-500"></i> Kembali ke Halaman Utama
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -177,14 +192,16 @@
             -webkit-box-shadow: 0 0 0 30px white inset !important;
         }
         /* Custom styles for Breeze components */
-        .w-full.pl-11.pr-4.py-3 {
+        .w-full.pl-11.pr-4.py-3, .w-full.pl-11.pr-12.py-3 {
             border-radius: 0.75rem;
             border-color: #d1d5db;
             background-color: #f9fafb;
+            transition: all 0.3s ease;
         }
-        .w-full.pl-11.pr-4.py-3:focus {
+        .w-full.pl-11.pr-4.py-3:focus, .w-full.pl-11.pr-12.py-3:focus {
             --tw-ring-color: rgb(236 72 153 / var(--tw-ring-opacity));
-            --tw-ring-opacity: 1;
+            --tw-ring-opacity: 0.5;
+            box-shadow: 0 0 0 2px var(--tw-ring-color);
             border-color: #ec4899;
             background-color: white;
         }
