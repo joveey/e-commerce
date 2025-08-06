@@ -41,24 +41,24 @@
             <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${(activeSlide - 1) * 100}%)`">
                 {{-- ## PERUBAHAN DI SINI: Menggunakan nama file gambar Anda ## --}}
                 <!-- Slide 1 -->
-                <div class="w-full flex-shrink-0">
-                    <img src="{{ asset('images/banner_welcome.png') }}" alt="Promotional Banner 1" class="w-full h-auto object-cover">
+                <div class="w-full flex-shrink-0 h-72 lg:h-96">
+                    <img src="{{ asset('images/banner_diskon.png') }}" alt="Promotional Banner 1" class="w-full h-full object-cover">
                 </div>
                 <!-- Slide 2 -->
-                <div class="w-full flex-shrink-0">
-                    <img src="{{ asset('images/banner_profil.png') }}" alt="Promotional Banner 2" class="w-full h-auto object-cover">
+                <div class="w-full flex-shrink-0 h-72 lg:h-96">
+                    <img src="{{ asset('images/banner_profil.png') }}" alt="Promotional Banner 2" class="w-full h-full object-cover">
                 </div>
                 <!-- Slide 3 -->
-                <div class="w-full flex-shrink-0">
-                    <img src="{{ asset('images/banner_diskon.png') }}" alt="Promotional Banner 3" class="w-full h-auto object-cover">
+                <div class="w-full flex-shrink-0 h-72 lg:h-96">
+                    <img src="{{ asset('images/banner_welcome.png') }}" alt="Promotional Banner 3" class="w-full h-full object-cover">
                 </div>
                 <!-- Slide 4 -->
-                <div class="w-full flex-shrink-0">
-                    <img src="{{ asset('images/banner_akhirtahun.png') }}" alt="Promotional Banner 4" class="w-full h-auto object-cover">
+                <div class="w-full flex-shrink-0 h-72 lg:h-96">
+                    <img src="{{ asset('images/banner_akhirtahun.png') }}" alt="Promotional Banner 4" class="w-full h-full object-cover">
                 </div>
                 <!-- Slide 5 -->
-                <div class="w-full flex-shrink-0">
-                    <img src="{{ asset('images/banner_comingsoon.png') }}" alt="Promotional Banner 5" class="w-full h-auto object-cover">
+                <div class="w-full flex-shrink-0 h-72 lg:h-96">
+                    <img src="{{ asset('images/banner_comingsoon.png') }}" alt="Promotional Banner 5" class="w-full h-full object-cover">
                 </div>
             </div>
 
