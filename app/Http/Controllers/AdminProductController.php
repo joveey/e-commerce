@@ -20,12 +20,13 @@ class AdminProductController extends Controller
     }
 
     public function store(Request $request) {
+        // ## PERUBAHAN DI SINI ##
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|max:10240', // max:10240 berarti 10MB
             'category_id' => 'required|exists:categories,id',
         ]);
         if ($request->hasFile('image')) {
@@ -41,12 +42,13 @@ class AdminProductController extends Controller
     }
 
     public function update(Request $request, Product $product) {
+        // ## PERUBAHAN DI SINI ##
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|max:10240', // max:10240 berarti 10MB
             'category_id' => 'required|exists:categories,id',
         ]);
         if ($request->hasFile('image')) {
