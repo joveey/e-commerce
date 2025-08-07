@@ -317,66 +317,74 @@
         
         <!-- Main Content -->
         <div class="content">
-            <div class="greeting">Halo {{ $user->name }}! 👋</div>
-            <div class="intro-text">
-                Terima kasih telah berbelanja di <strong>Verse Beauty</strong>. Berikut adalah detail invoice dari pembelian Anda:
-            </div>
-            
-            <!-- Invoice Information -->
-            <div class="invoice-info">
-                <div class="invoice-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Nomor Invoice</div>
-                        <div class="meta-value">#VB-{{ date('Ymd') }}-{{ str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT) }}</div>
+            {{-- PERBAIKAN: Menambahkan pemeriksaan untuk variabel $user --}}
+            @if(isset($user))
+                <div class="greeting">Halo {{ $user->name ?? 'Pelanggan' }}! 👋</div>
+                <div class="intro-text">
+                    Terima kasih telah berbelanja di <strong>Verse Beauty</strong>. Berikut adalah detail invoice dari pembelian Anda:
+                </div>
+                
+                <!-- Invoice Information -->
+                <div class="invoice-info">
+                    <div class="invoice-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Nomor Invoice</div>
+                            <div class="meta-value">#VB-{{ date('Ymd') }}-{{ str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT) }}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Tanggal Pembelian</div>
+                            <div class="meta-value">{{ date('d F Y, H:i') }} WIB</div>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Tanggal Pembelian</div>
-                        <div class="meta-value">{{ date('d F Y, H:i') }} WIB</div>
+                    <div class="invoice-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Pelanggan</div>
+                            <div class="meta-value">{{ $user->name ?? 'N/A' }}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Email</div>
+                            <div class="meta-value">{{ $user->email ?? 'N/A' }}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="invoice-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">Pelanggan</div>
-                        <div class="meta-value">{{ $user->name }}</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Email</div>
-                        <div class="meta-value">{{ $user->email }}</div>
-                    </div>
-                </div>
-            </div>
+            @endif
             
             <!-- Invoice Table -->
-            <table class="invoice-table">
-                <thead>
-                    <tr>
-                        <th>Produk</th>
-                        <th style="text-align: center;">Jumlah</th>
-                        <th>Harga Satuan</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $total = 0; @endphp
-                    @foreach ($cart as $item)
+            {{-- PERBAIKAN: Menambahkan pemeriksaan untuk variabel $cart --}}
+            @if(isset($cart) && is_array($cart) && count($cart) > 0)
+                <table class="invoice-table">
+                    <thead>
                         <tr>
-                            <td class="product-name">{{ $item['name'] }}</td>
-                            <td class="quantity">{{ $item['quantity'] }}x</td>
-                            <td class="price">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
-                            <td class="price">Rp {{ number_format($item['quantity'] * $item['price'], 0, ',', '.') }}</td>
+                            <th>Produk</th>
+                            <th style="text-align: center;">Jumlah</th>
+                            <th>Harga Satuan</th>
+                            <th>Total</th>
                         </tr>
-                        @php $total += $item['quantity'] * $item['price']; @endphp
-                    @endforeach
-                    <tr class="total-row">
-                        <td colspan="3" style="text-align: right; padding-right: 20px;">
-                            <strong>TOTAL PEMBAYARAN</strong>
-                        </td>
-                        <td style="font-size: 20px; color: #059669;">
-                            <strong>Rp {{ number_format($total, 0, ',', '.') }}</strong>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @php $total = 0; @endphp
+                        @foreach ($cart as $item)
+                            <tr>
+                                <td class="product-name">{{ $item['name'] ?? 'Nama Produk' }}</td>
+                                <td class="quantity">{{ $item['quantity'] ?? 0 }}x</td>
+                                <td class="price">Rp {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="price">Rp {{ number_format(($item['quantity'] ?? 0) * ($item['price'] ?? 0), 0, ',', '.') }}</td>
+                            </tr>
+                            @php $total += ($item['quantity'] ?? 0) * ($item['price'] ?? 0); @endphp
+                        @endforeach
+                        <tr class="total-row">
+                            <td colspan="3" style="text-align: right; padding-right: 20px;">
+                                <strong>TOTAL PEMBAYARAN</strong>
+                            </td>
+                            <td style="font-size: 20px; color: #059669;">
+                                <strong>Rp {{ number_format($total, 0, ',', '.') }}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            @else
+                <p class="intro-text">Detail keranjang belanja tidak tersedia.</p>
+            @endif
             
             <!-- Footer Message -->
             <div class="footer-message">
@@ -405,6 +413,7 @@
                 📧 hello@versebeauty.com | 🌐 www.versebeauty.com
             </p>
             <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">
+                {{-- Baris ini sudah benar, tidak ada error di sini --}}
                 © {{ date('Y') }} Verse Beauty. All rights reserved.<br>
                 Email ini dikirim otomatis, mohon jangan dibalas.
             </p>

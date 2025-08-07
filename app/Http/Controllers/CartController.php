@@ -14,7 +14,7 @@ use App\Mail\InvoiceMail;
 
 class CartController extends Controller
 {
-    // ... (method add, update, remove, dan index Anda tetap sama) ...
+    // ... (method add, update, remove, index, dan showCheckout Anda tetap sama) ...
     public function add(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -130,7 +130,6 @@ class CartController extends Controller
         }
 
         $totalPrice = 0;
-        $mailItems = []; // 1. Buat array kosong untuk data email
 
         $order = $user->orders()->create([
             'total_price' => 0,
@@ -151,29 +150,21 @@ class CartController extends Controller
                 'price' => $product->price,
             ]);
             $totalPrice += $product->price * $item->quantity;
-
-            // 2. Isi array dengan data yang akan dikirim ke email
-            $mailItems[$product->id] = [
-                'name' => $product->name,
-                'quantity' => $item->quantity,
-                'price' => $product->price,
-                'image' => $product->image,
-            ];
         }
 
         $shippingCost = 15000;
         $finalTotal = $totalPrice + $shippingCost;
         $order->update(['total_price' => $finalTotal]);
 
-        // 3. Kirim email dengan 2 argumen: array item dan objek user
-        Mail::to($user->email)->send(new InvoiceMail($mailItems, $user));
+        // ## PERUBAHAN DI SINI: Mengirim objek $order yang lengkap ##
+        $order->load('user', 'items.product'); // Memuat relasi
+        Mail::to($user->email)->send(new InvoiceMail($order));
 
         $cart->items()->delete();
 
         return redirect('/')->with('success', 'Checkout berhasil! Invoice telah dikirim ke email Anda.');
     }
 
-    // ... (method checkoutSingle dan updateAjax Anda tetap sama) ...
     public function checkoutSingle($id)
     {
         $product = Product::findOrFail($id);
@@ -188,6 +179,7 @@ class CartController extends Controller
         if ($product->stock < 1) {
             return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
         }
+
         $product->stock -= 1;
         $product->save();
         $order = $user->orders()->create(['total_price' => $product->price]);
@@ -196,15 +188,11 @@ class CartController extends Controller
             'quantity' => 1,
             'price' => $product->price,
         ]);
-        $item = [
-            $product->id => [
-                'name' => $product->name,
-                'quantity' => 1,
-                'price' => $product->price,
-                'image' => $product->image,
-            ]
-        ];
-        Mail::to($user->email)->send(new InvoiceMail($item, $user));
+
+        // ## PERUBAHAN DI SINI: Mengirim objek $order yang lengkap ##
+        $order->load('user', 'items.product'); // Memuat relasi
+        Mail::to($user->email)->send(new InvoiceMail($order));
+
         return redirect('/')->with('success', 'Checkout berhasil! Invoice dikirim ke email.');
     }
 
