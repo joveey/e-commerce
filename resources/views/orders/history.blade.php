@@ -89,9 +89,9 @@
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">Lihat semua transaksi dan berikan rating untuk produk yang sudah kamu beli</p>
     </div>
 
-    <!-- Filter Section -->
+    <!-- ## BAGIAN YANG DIUBAH: Filter Section ## -->
     <div class="gradient-card rounded-3xl p-6 mb-8">
-        <div class="flex flex-wrap gap-4 justify-center md:justify-start items-center">
+        <div class="flex flex-wrap gap-4 justify-center items-center">
             <div class="flex items-center space-x-3 mb-4 md:mb-0">
                 <svg class="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
@@ -103,17 +103,17 @@
                 <button @click="filterOrders('all')" :class="{ 'gradient-button text-white shadow-lg': activeFilter === 'all', 'bg-white/70 text-gray-700 hover:bg-white border border-pink-200': activeFilter !== 'all' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
                     <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Semua Pesanan
                 </button>
-                <button @click="filterOrders('{{ \App\Models\Order::STATUS_COMPLETED }}')" :class="{ 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_COMPLETED }}', 'bg-white/70 text-gray-700 hover:bg-white border border-green-200': activeFilter !== '{{ \App\Models\Order::STATUS_COMPLETED }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
-                    <i class="fas fa-check-circle mr-2"></i> Selesai
-                </button>
-                <button @click="filterOrders('{{ \App\Models\Order::STATUS_SHIPPED }}')" :class="{ 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_SHIPPED }}', 'bg-white/70 text-gray-700 hover:bg-white border border-blue-200': activeFilter !== '{{ \App\Models\Order::STATUS_SHIPPED }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
-                    <i class="fas fa-truck mr-2"></i> Dikirim
+                <button @click="filterOrders('{{ \App\Models\Order::STATUS_PENDING }}')" :class="{ 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_PENDING }}', 'bg-white/70 text-gray-700 hover:bg-white border border-yellow-200': activeFilter !== '{{ \App\Models\Order::STATUS_PENDING }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
+                    <i class="fas fa-clock mr-2"></i> Menunggu
                 </button>
                 <button @click="filterOrders('{{ \App\Models\Order::STATUS_PROCESSING }}')" :class="{ 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_PROCESSING }}', 'bg-white/70 text-gray-700 hover:bg-white border border-orange-200': activeFilter !== '{{ \App\Models\Order::STATUS_PROCESSING }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
                     <i class="fas fa-cog mr-2"></i> Diproses
                 </button>
-                <button @click="filterOrders('{{ \App\Models\Order::STATUS_PENDING }}')" :class="{ 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_PENDING }}', 'bg-white/70 text-gray-700 hover:bg-white border border-yellow-200': activeFilter !== '{{ \App\Models\Order::STATUS_PENDING }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
-                    <i class="fas fa-clock mr-2"></i> Menunggu
+                <button @click="filterOrders('{{ \App\Models\Order::STATUS_SHIPPED }}')" :class="{ 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_SHIPPED }}', 'bg-white/70 text-gray-700 hover:bg-white border border-blue-200': activeFilter !== '{{ \App\Models\Order::STATUS_SHIPPED }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
+                    <i class="fas fa-truck mr-2"></i> Dikirim
+                </button>
+                <button @click="filterOrders('{{ \App\Models\Order::STATUS_COMPLETED }}')" :class="{ 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg': activeFilter === '{{ \App\Models\Order::STATUS_COMPLETED }}', 'bg-white/70 text-gray-700 hover:bg-white border border-green-200': activeFilter !== '{{ \App\Models\Order::STATUS_COMPLETED }}' }" class="filter-button px-6 py-3 rounded-full font-bold text-sm backdrop-blur-sm">
+                    <i class="fas fa-check-circle mr-2"></i> Selesai
                 </button>
             </div>
         </div>
