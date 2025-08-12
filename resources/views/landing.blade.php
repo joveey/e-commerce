@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- ## BAGIAN YANG DIUBAH: Banner Statis menjadi Slideshow Dinamis ## -->
 <section class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Container untuk banner slideshow --}}
@@ -37,32 +36,25 @@
             x-init="startAutoplay()"
             class="relative rounded-2xl shadow-lg overflow-hidden bg-pink-50"
         >
-            <!-- Slides Container -->
             <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${(activeSlide - 1) * 100}%)`">
                 {{-- ## PERUBAHAN DI SINI: Menggunakan nama file gambar Anda ## --}}
-                <!-- Slide 1 -->
                 <div class="w-full flex-shrink-0 h-72 lg:h-96">
                     <img src="{{ asset('images/banner_welcome.png') }}" alt="Promotional Banner 1" class="w-full h-full object-cover">
                 </div>
-                <!-- Slide 2 -->
                 <div class="w-full flex-shrink-0 h-72 lg:h-96">
                     <img src="{{ asset('images/banner_profil.png') }}" alt="Promotional Banner 2" class="w-full h-full object-cover">
                 </div>
-                <!-- Slide 3 -->
                 <div class="w-full flex-shrink-0 h-72 lg:h-96">
                     <img src="{{ asset('images/banner_diskon.png') }}" alt="Promotional Banner 3" class="w-full h-full object-cover">
                 </div>
-                <!-- Slide 4 -->
                 <div class="w-full flex-shrink-0 h-72 lg:h-96">
                     <img src="{{ asset('images/banner_akhirtahun.png') }}" alt="Promotional Banner 4" class="w-full h-full object-cover">
                 </div>
-                <!-- Slide 5 -->
                 <div class="w-full flex-shrink-0 h-72 lg:h-96">
                     <img src="{{ asset('images/banner_comingsoon.png') }}" alt="Promotional Banner 5" class="w-full h-full object-cover">
                 </div>
             </div>
 
-            <!-- Navigation Arrows -->
             <button @click="prev()" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/50 hover:bg-white rounded-full w-10 h-10 flex items-center justify-center text-gray-700 transition">
                 <i class="fas fa-chevron-left"></i>
             </button>
@@ -70,7 +62,6 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
 
-            <!-- Navigation Dots -->
             <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
                 <template x-for="i in totalSlides" :key="i">
                     <button @click="goToSlide(i)" :class="{'bg-pink-500': activeSlide === i, 'bg-white/50': activeSlide !== i}" class="w-3 h-3 rounded-full transition"></button>
@@ -80,12 +71,13 @@
     </div>
 </section>
 
-<!-- Categories Section -->
-<section class="py-8 bg-white">
+<section id="categories-section" class="py-8 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-gray-900">Jelajahi Kategori</h2>
-            <a href="#" class="text-pink-600 hover:text-pink-700 font-medium">Lihat Semua</a>
+            <button id="scroll-to-products" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300">
+                Lihat Semua Produk
+            </button>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             @foreach($categories as $category)
@@ -103,19 +95,15 @@
     </div>
 </section>
 
-<!-- Featured Products Section -->
-<section class="py-8 bg-gradient-to-br from-gray-50 to-gray-100">
+<section id="products-section" class="py-8 bg-gradient-to-br from-gray-50 to-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
             <div>
                 <h2 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                    Produk Terlaris
+                    Semua Produk
                 </h2>
                 <p class="text-gray-600 mt-1">Produk pilihan yang paling disukai pelanggan</p>
             </div>
-            <button class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300">
-                Lihat Semua
-            </button>
         </div>
         
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -180,7 +168,6 @@
     </div>
 </section>
 
-<!-- Quick Features -->
 <section class="py-8 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -216,7 +203,6 @@
     </div>
 </section>
 
-<!-- Testimonials Section -->
 <section class="py-8 bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-2xl font-bold text-center bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-6">
@@ -265,3 +251,40 @@
 </section>
 
 @endsection
+
+{{-- ## BAGIAN DIUBAH: Penambahan script di akhir file ## --}}
+@push('scripts')
+<script>
+    // Pastikan DOM sudah dimuat sepenuhnya
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        // --- Logika untuk tombol "Lihat Semua Kategori" ---
+        // 1. Pilih tombol berdasarkan ID
+        const scrollToCategoriesButton = document.getElementById('scroll-to-categories');
+        // 2. Pilih target section berdasarkan ID
+        const categoriesSection = document.getElementById('categories-section');
+
+        // Tambahkan event listener jika tombolnya ada
+        if (scrollToCategoriesButton && categoriesSection) {
+            scrollToCategoriesButton.addEventListener('click', function() {
+                // Saat diklik, scroll ke target dengan efek smooth
+                categoriesSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // --- Logika untuk tombol "Lihat Semua Produk" ---
+        // 1. Pilih tombol berdasarkan ID
+        const scrollToProductsButton = document.getElementById('scroll-to-products');
+        // 2. Pilih target section berdasarkan ID
+        const productsSection = document.getElementById('products-section');
+
+        // Tambahkan event listener jika tombolnya ada
+        if (scrollToProductsButton && productsSection) {
+            scrollToProductsButton.addEventListener('click', function() {
+                // Saat diklik, scroll ke target dengan efek smooth
+                productsSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+    });
+</script>
+@endpush
