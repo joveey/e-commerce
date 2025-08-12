@@ -382,8 +382,6 @@
                         </tr>
                     </tbody>
                 </table>
-            @else
-                <p class="intro-text">Detail keranjang belanja tidak tersedia.</p>
             @endif
             
             <!-- Footer Message -->
