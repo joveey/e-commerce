@@ -47,4 +47,22 @@ class ProductController extends Controller
             'category' => $category->name
         ]);
     }
+    
+    public function search(Request $request)
+    {
+        // Validasi input, pastikan ada query yang dikirim
+        $request->validate([
+            'query' => 'required|string|min:2',
+        ]);
+
+        $query = $request->input('query');
+
+        // Lakukan pencarian di database pada kolom 'name' dan 'description'
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+                           ->orWhere('description', 'LIKE', "%{$query}%")
+                           ->paginate(10); // Gunakan paginate untuk hasil yang banyak
+
+        // Kirim hasil ke view baru
+        return view('products.search-results', compact('products', 'query'));
+    }
 }

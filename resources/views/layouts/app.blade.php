@@ -123,7 +123,7 @@
         
         .search-bar input {
             width: 100%;
-            padding: 0.875rem 1.25rem;
+            padding: 0.875rem 3.5rem 0.875rem 1.25rem; /* Add padding for the button */
             border: 2px solid rgba(236, 72, 153, 0.1);
             border-radius: 30px;
             font-size: 0.95rem;
@@ -143,6 +143,29 @@
         
         .search-bar input::placeholder {
             color: #9ca3af;
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
         }
         
         .nav-actions {
@@ -258,7 +281,6 @@
             background: rgba(220, 38, 38, 0.1);
         }
         
-        /* Full width content */
         .main-content {
             padding: 0;
             width: 100%;
@@ -271,7 +293,6 @@
             padding: 0;
         }
         
-        /* Glass effect updates */
         .glass {
             background: rgba(255, 255, 255, 0.8);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -368,7 +389,6 @@
             padding: 3rem 2rem;
         }
         
-        /* Header adjustments for full width */
         .header-content {
             width: 100%;
             max-width: none;
@@ -464,8 +484,14 @@
             <div class="main-nav-content">
                 <a href="{{ route('landing') }}" class="logo">Verse Beauty</a>
                 
+                {{-- ## BAGIAN YANG DIUBAH ## --}}
                 <div class="search-bar">
-                    <input type="text" placeholder="Cari produk kecantikan impianmu...">
+                    <form action="{{ route('products.search') }}" method="GET">
+                        <input type="text" name="query" placeholder="Cari produk kecantikan impianmu..." value="{{ request('query') }}">
+                        <button type="submit" title="Cari">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
                 
                 <div class="nav-actions">
