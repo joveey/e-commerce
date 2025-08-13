@@ -25,6 +25,9 @@ Route::get('/kategori/{id}', [ProductController::class, 'byCategory'])->name('pr
 // Produk detail untuk user biasa
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('user.products.show');
 
+// search produk
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+
 // Authenticated + Verified users
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/{product}', [ProductController::class, 'checkout'])->name('checkout');
@@ -55,9 +58,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ## RUTE BARU UNTUK DOWNLOAD INVOICE ##
     Route::get('/orders/{order}/invoice/download', [OrderController::class, 'downloadInvoice'])->name('orders.invoice.download');
 
-    // search produk
-    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
-    
     // Product Ratings
     Route::post('/products/rate', [ProductRatingController::class, 'store'])->name('products.rate');
     Route::post('/products/clear-rating-session', [ProductRatingController::class, 'clearRatingSession'])->name('products.clearRatingSession');
